@@ -33,7 +33,19 @@ public class PriorityQueue
     /// <returns></returns>
     public Node Dequeue()
     {
-        return nodeQueue[nodeQueue.Count-1];
+        Node firstNode = nodeQueue[nodeQueue.Count - 1];
+        nodeQueue.RemoveAt(nodeQueue.Count - 1);
+        return firstNode;
+    }
+
+    public bool IsEmpty()
+    {
+        return nodeQueue.Count == 0;
+    }
+
+    public bool Contains(Node childNode)
+    {
+        return nodeQueue.Contains(childNode);
     }
 
 
