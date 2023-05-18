@@ -54,6 +54,10 @@ public class AStarAlgorithm
         return null;
     }
 
+    /// <summary>
+    /// TODO: Currently it only generates a random point in the grid to be the exit. We will want to change this so that it moves towards the player when the player gets closer to the enemy.
+    /// </summary>
+    /// <returns></returns>
     Node FindEndNode()
     {
 
@@ -61,7 +65,7 @@ public class AStarAlgorithm
         return mazeFloor[Random.Range(0, mazeFloor.Count)];
     }
 
-
+    // TODO: For some reason, the A* algorithm does not provide the shortest path.
     /// <summary>
     /// Performs A* algorithm.
     /// </summary>
@@ -69,7 +73,7 @@ public class AStarAlgorithm
     {
         OpenQueue = new PriorityQueue();
         VisitedNodes = new List<Node>();
-        PathToGoal = new List<Node>() { start };
+        PathToGoal = new List<Node>();
 
         // Calculates the estimated distance between start and end node.
         start.GoalScore = Heuristics(start, end);
@@ -82,7 +86,10 @@ public class AStarAlgorithm
         {
             Node newNode = OpenQueue.Dequeue();
             if (newNode == end)
+            {
+                ConstructPath(newNode);
                 return;
+            }
             VisitedNodes.Add(newNode);
 
             foreach(var childNode in newNode.NeighborNodes)
@@ -96,11 +103,12 @@ public class AStarAlgorithm
                     childNode.StartScore = tentativeGScore;
                     childNode.GoalScore = Heuristics(childNode, end);
                     childNode.TotalEstimatedScore = childNode.StartScore + childNode.GoalScore;
+                    childNode.cameFrom = newNode;
 
                     if (!OpenQueue.Contains(childNode))
                         OpenQueue.Enqueue(childNode, newNode.TotalEstimatedScore);
 
-                    AddNodeToPathList(childNode);
+                    
                 }
             }
         }
@@ -110,14 +118,31 @@ public class AStarAlgorithm
     /// Adds the new neighbor node to the list of nodes the enemy will traverse to reach the goal.
     /// </summary>
     /// <param name="newNode"></param>
-    void AddNodeToPathList(Node newNode)
+    void ConstructPath(Node goalNode)
     {
-        if (PathToGoal.Contains(newNode))
+        List<Node> tempList = new List<Node>();
+        Node parent = goalNode;
+        while(parent != null)
         {
-            PathToGoal.Remove(newNode);
+            tempList.Add(parent);
+
+            parent = parent.cameFrom;
         }
 
-        PathToGoal.Add(newNode);
+        Debug.Log("Temp List: " + tempList.Count);
+
+        for(int i = tempList.Count-1; i >=0; i--)
+        {
+            PathToGoal.Add(tempList[i]);
+        }
+
+        Debug.Log("Path To Goal: " + PathToGoal.Count);
+
+        // TODO: For some reason, the first node in the list is null (after the list is reversed).
+        foreach(var node in PathToGoal)
+        {
+            Debug.Log("Node is null: " + (node == null));
+        }
     }
 
     /// <summary>

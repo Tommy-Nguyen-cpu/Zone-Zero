@@ -27,6 +27,8 @@ public class Node
     /// </summary>
     public (float, float) NodeCenter = (0f, 0f);
 
+    public Node? cameFrom = null;
+
     /// <summary>
     /// List of all adjacent nodes.
     /// </summary>

@@ -64,6 +64,8 @@ public class GridManagerScript : MonoBehaviour
     {
         foreach(var node in FloorNodes)
         {
+            Gizmos.color = Color.red;
+
             Gizmos.DrawWireCube(new Vector3(node.NodeCenter.Item1, 0f, node.NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
         }
 
