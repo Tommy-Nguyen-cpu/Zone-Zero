@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node
+public class Node : IComparable
 {
     /// <summary>
     /// How far the current node is from the goal node.
@@ -44,5 +45,16 @@ public class Node
         {
             NeighborNodes.Add(node);
         }
+    }
+
+    public int CompareTo(object obj)
+    {
+        Node node = (Node)obj;
+        if (this.TotalEstimatedScore < node.TotalEstimatedScore)
+            return -1;
+        if (this.TotalEstimatedScore > node.TotalEstimatedScore)
+            return 1;
+
+        return 0;
     }
 }

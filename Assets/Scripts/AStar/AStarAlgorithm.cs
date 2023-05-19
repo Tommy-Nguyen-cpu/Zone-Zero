@@ -7,8 +7,7 @@ using UnityEngine;
 public class AStarAlgorithm
 {
     PriorityQueue OpenQueue = new PriorityQueue();
-    List<Node> VisitedNodes = new List<Node>();
-    public List<Node> PathToGoal = new List<Node>();
+    List<Node> ClosedQueue = new List<Node>();
 
 
     List<Node> mazeFloor;
@@ -26,24 +25,11 @@ public class AStarAlgorithm
         enemy = myEnemy;
     }
 
-    // Update is called once per frame
-    public void StartAStar()
-    {
-        Node startNode = FindStartNode();
-
-        // Only time it is null is if we didn't generate the enemy at the location of a tile in the maze.
-        if(startNode != null)
-        {
-            Node goalNode = FindEndNode();
-            RunAStar(startNode, goalNode);
-        }
-    }
-
     /// <summary>
     /// Retrieve the node the enemy NPC is on right now.
     /// </summary>
     /// <returns> </returns>
-    Node? FindStartNode()
+    public Node? FindStartNode()
     {
         foreach(var node in mazeFloor)
         {
@@ -58,7 +44,7 @@ public class AStarAlgorithm
     /// TODO: Currently it only generates a random point in the grid to be the exit. We will want to change this so that it moves towards the player when the player gets closer to the enemy.
     /// </summary>
     /// <returns></returns>
-    Node FindEndNode()
+    public Node FindEndNode()
     {
 
         // Returns a random location for the enemy to move towards.
@@ -69,80 +55,64 @@ public class AStarAlgorithm
     /// <summary>
     /// Performs A* algorithm.
     /// </summary>
-    void RunAStar(Node start, Node end)
+    public List<Node> RunAStar(Node start, Node end)
     {
         OpenQueue = new PriorityQueue();
-        VisitedNodes = new List<Node>();
-        PathToGoal = new List<Node>();
+        ClosedQueue = new List<Node>();
 
-        // Calculates the estimated distance between start and end node.
         start.GoalScore = Heuristics(start, end);
-
+        start.StartScore = 0;
         start.TotalEstimatedScore = start.StartScore + start.GoalScore;
-        OpenQueue.Enqueue(start, start.TotalEstimatedScore);
 
-        // Iterates until we have reached all nodes.
+        OpenQueue.Enqueue(start);
+
         while (!OpenQueue.IsEmpty())
         {
-            Node newNode = OpenQueue.Dequeue();
-            if (newNode == end)
-            {
-                ConstructPath(newNode);
-                return;
-            }
-            VisitedNodes.Add(newNode);
+            Node currentNode = OpenQueue.Dequeue();
 
-            foreach(var childNode in newNode.NeighborNodes)
+            if (currentNode == end)
+                return ConstructPath(currentNode);
+
+            ClosedQueue.Add(currentNode);
+
+            foreach(var neighbor in currentNode.NeighborNodes)
             {
-                if (VisitedNodes.Contains(childNode))
+                if (ClosedQueue.Contains(neighbor))
                     continue;
 
-                float tentativeGScore = newNode.StartScore + Heuristics(newNode, childNode);
-                if (!OpenQueue.Contains(childNode) || tentativeGScore < childNode.StartScore)
+                float tentativeStartScore = currentNode.StartScore + Heuristics(currentNode, neighbor);
+                if(!OpenQueue.Contains(neighbor) || tentativeStartScore < neighbor.StartScore)
                 {
-                    childNode.StartScore = tentativeGScore;
-                    childNode.GoalScore = Heuristics(childNode, end);
-                    childNode.TotalEstimatedScore = childNode.StartScore + childNode.GoalScore;
-                    childNode.cameFrom = newNode;
+                    neighbor.StartScore = tentativeStartScore;
+                    neighbor.GoalScore = Heuristics(neighbor, end);
+                    neighbor.TotalEstimatedScore = neighbor.StartScore + neighbor.GoalScore;
+                    neighbor.cameFrom = currentNode;
 
-                    if (!OpenQueue.Contains(childNode))
-                        OpenQueue.Enqueue(childNode, newNode.TotalEstimatedScore);
-
-                    
+                    if (!OpenQueue.Contains(neighbor))
+                        OpenQueue.Enqueue(neighbor);
                 }
             }
         }
+
+        return null;
     }
 
     /// <summary>
     /// Adds the new neighbor node to the list of nodes the enemy will traverse to reach the goal.
     /// </summary>
     /// <param name="newNode"></param>
-    void ConstructPath(Node goalNode)
+    List<Node> ConstructPath(Node goalNode)
     {
-        List<Node> tempList = new List<Node>();
-        Node parent = goalNode;
-        while(parent != null)
-        {
-            tempList.Add(parent);
+        List<Node> PathToGoal = new List<Node>();
+        Node current = goalNode;
 
-            parent = parent.cameFrom;
+        while (current != null)
+        {
+            PathToGoal.Insert(0, current);
+            current = current.cameFrom;
         }
 
-        Debug.Log("Temp List: " + tempList.Count);
-
-        for(int i = tempList.Count-1; i >=0; i--)
-        {
-            PathToGoal.Add(tempList[i]);
-        }
-
-        Debug.Log("Path To Goal: " + PathToGoal.Count);
-
-        // TODO: For some reason, the first node in the list is null (after the list is reversed).
-        foreach(var node in PathToGoal)
-        {
-            Debug.Log("Node is null: " + (node == null));
-        }
+        return PathToGoal;
     }
 
     /// <summary>
@@ -155,6 +125,6 @@ public class AStarAlgorithm
     {
         float diffX = goal.NodeCenter.Item1 - start.NodeCenter.Item1;
         float diffZ = goal.NodeCenter.Item2 - start.NodeCenter.Item2;
-        return Mathf.Sqrt(diffX * diffX + diffZ * diffZ);
+        return Mathf.Sqrt(Mathf.Pow(diffX, 2) + Mathf.Pow(diffZ, 2));
     }
 }

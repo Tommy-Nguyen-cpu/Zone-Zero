@@ -22,6 +22,7 @@ public class GridManagerScript : MonoBehaviour
     List<Node> FloorNodes = new List<Node>();
 
     AStarAlgorithm algorithm = new AStarAlgorithm();
+    List<Node> PathToGoal = new List<Node>();
 
     public GameObject Enemy;
 
@@ -57,7 +58,9 @@ public class GridManagerScript : MonoBehaviour
 
         algorithm.GetNodeListAndEnemyObject(FloorNodes, Enemy);
 
-        algorithm.StartAStar();
+        Node startNode = algorithm.FindStartNode();
+        Node endNode = algorithm.FindEndNode();
+        PathToGoal = algorithm.RunAStar(startNode, endNode);
     }
 
     private void OnDrawGizmos()
@@ -69,24 +72,24 @@ public class GridManagerScript : MonoBehaviour
             Gizmos.DrawWireCube(new Vector3(node.NodeCenter.Item1, 0f, node.NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
         }
 
-        Node previousNode = algorithm.PathToGoal[0];
+        Node previousNode = PathToGoal[0];
 
         Debug.Log($"Node has {previousNode.NeighborNodes.Count} neighbors");
 
-        Debug.Log($"Number of nodes in path: {algorithm.PathToGoal.Count}");
-        for(int i = 1; i < algorithm.PathToGoal.Count; i++)
+        Debug.Log($"Number of nodes in path: {PathToGoal.Count}");
+        for(int i = 1; i < PathToGoal.Count; i++)
         {
             Gizmos.color = Color.green;
 
-            Gizmos.DrawLine(new Vector3(previousNode.NodeCenter.Item1, 10f, previousNode.NodeCenter.Item2), new Vector3(algorithm.PathToGoal[i].NodeCenter.Item1, 10f, algorithm.PathToGoal[i].NodeCenter.Item2));
-            previousNode = algorithm.PathToGoal[i];
+            Gizmos.DrawLine(new Vector3(previousNode.NodeCenter.Item1, 10f, previousNode.NodeCenter.Item2), new Vector3(PathToGoal[i].NodeCenter.Item1, 10f, PathToGoal[i].NodeCenter.Item2));
+            previousNode = PathToGoal[i];
 
 
             // Colors the goal block.
-            if (i + 1 == algorithm.PathToGoal.Count)
+            if (i + 1 == PathToGoal.Count)
             {
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawWireCube(new Vector3(algorithm.PathToGoal[i].NodeCenter.Item1, 0f, algorithm.PathToGoal[i].NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
+                Gizmos.DrawWireCube(new Vector3(PathToGoal[i].NodeCenter.Item1, 0f, PathToGoal[i].NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
             }
 
         }

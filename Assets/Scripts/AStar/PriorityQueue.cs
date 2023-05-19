@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PriorityQueue
 {
@@ -9,21 +10,10 @@ public class PriorityQueue
     /// </summary>
     /// <param name="newNode"></param>
     /// <param name="priority"> Total cost from start node to goal node.</param>
-    public void Enqueue(Node newNode, float priority)
+    public void Enqueue(Node newNode)
     {
-        // If the list is empty, we just add the new node to the list.
-        if (nodeQueue.Count == 0)
-            nodeQueue.Add(newNode);
-        else
-        {
-            Node firstNode = nodeQueue[nodeQueue.Count-1];
-            
-            // If the new node has a smaller start-to-goal node distance, we add it to the beginning of the list.
-            if(newNode.TotalEstimatedScore < firstNode.TotalEstimatedScore)
-            {
-                nodeQueue.Add(newNode);
-            }
-        }
+        nodeQueue.Add(newNode);
+        nodeQueue.Sort();
 
     }
 
@@ -33,8 +23,8 @@ public class PriorityQueue
     /// <returns></returns>
     public Node Dequeue()
     {
-        Node firstNode = nodeQueue[nodeQueue.Count - 1];
-        nodeQueue.RemoveAt(nodeQueue.Count - 1);
+        Node firstNode = nodeQueue[0];
+        nodeQueue.Remove(firstNode);
         return firstNode;
     }
 
