@@ -21,10 +21,8 @@ public class Leaf
     /// </summary>
     public Func<bool> Condition = null;
 
-    /// <summary>
-    /// The child of the current leaf (only non-null if this is not a terminal leaf).
-    /// </summary>
-    public Leaf NextLeaf;
+    public Leaf RightLeaf;
+    public Leaf LeftLeaf;
 
     /// <summary>
     /// If the condition is met, we retrieve the child leaf of the current leaf.
@@ -32,8 +30,10 @@ public class Leaf
     /// <returns></returns>
     public Leaf CheckCondition()
     {
-        if (Condition())
-            return NextLeaf;
+        if (RightLeaf.Condition())
+            return RightLeaf;
+        else if (LeftLeaf.Condition())
+            return LeftLeaf;
         return null;
     }
 
