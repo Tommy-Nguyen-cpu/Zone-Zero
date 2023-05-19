@@ -29,14 +29,13 @@ public class GridManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(float i = 0; i <= GridWidth; i += GridIncrement)
+        for(float i = Origin.Item1; i <= GridWidth; i += GridIncrement)
         {
-            for(float j = 0; j <= GridHeight; j += GridIncrement)
+            for(float j = Origin.Item2; j <= GridHeight; j += GridIncrement)
             {
                 Node newNode = new Node();
-                newNode.NodeWidth = GridIncrement;
-                newNode.NodeHeight = GridIncrement;
-                newNode.NodeCenter = (i, j);
+                newNode.Z = i;
+                newNode.X = j;
 
                 FloorNodes.Add(newNode);
 
@@ -56,11 +55,8 @@ public class GridManagerScript : MonoBehaviour
 
         SetUpNodeNeighborhoods();
 
-        algorithm.GetNodeListAndEnemyObject(FloorNodes, Enemy);
-
-        Node startNode = algorithm.FindStartNode();
-        Node endNode = algorithm.FindEndNode();
-        PathToGoal = algorithm.RunAStar(startNode, endNode);
+        PathToGoal = algorithm.FindPath(FloorNodes[0], FloorNodes[Random.Range(0, FloorNodes.Count)]);
+        Debug.Log("Nodes: " + PathToGoal.Count);
     }
 
     private void OnDrawGizmos()
@@ -69,19 +65,22 @@ public class GridManagerScript : MonoBehaviour
         {
             Gizmos.color = Color.red;
 
-            Gizmos.DrawWireCube(new Vector3(node.NodeCenter.Item1, 0f, node.NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
+            Gizmos.DrawWireCube(new Vector3(node.X, 0f, node.Z), new Vector3(GridIncrement, 10f, GridIncrement));
         }
+
 
         Node previousNode = PathToGoal[0];
 
-        Debug.Log($"Node has {previousNode.NeighborNodes.Count} neighbors");
+        Debug.Log($"Node has {previousNode.Neighbors.Count} neighbors");
+
 
         Debug.Log($"Number of nodes in path: {PathToGoal.Count}");
+
         for(int i = 1; i < PathToGoal.Count; i++)
         {
             Gizmos.color = Color.green;
 
-            Gizmos.DrawLine(new Vector3(previousNode.NodeCenter.Item1, 10f, previousNode.NodeCenter.Item2), new Vector3(PathToGoal[i].NodeCenter.Item1, 10f, PathToGoal[i].NodeCenter.Item2));
+            Gizmos.DrawLine(new Vector3(previousNode.X, 10f, previousNode.Z), new Vector3(PathToGoal[i].X, 10f, PathToGoal[i].Z));
             previousNode = PathToGoal[i];
 
 
@@ -89,7 +88,7 @@ public class GridManagerScript : MonoBehaviour
             if (i + 1 == PathToGoal.Count)
             {
                 Gizmos.color = Color.yellow;
-                Gizmos.DrawWireCube(new Vector3(PathToGoal[i].NodeCenter.Item1, 0f, PathToGoal[i].NodeCenter.Item2), new Vector3(GridIncrement, 10f, GridIncrement));
+                Gizmos.DrawWireCube(new Vector3(PathToGoal[i].X, 0f, PathToGoal[i].Z), new Vector3(GridIncrement, 10f, GridIncrement));
             }
 
         }
@@ -102,26 +101,30 @@ public class GridManagerScript : MonoBehaviour
         {
             foreach(var node in nodeList.Values)
             {
+                node.Neighbors = new List<Node>();
                 List<Node> neighborNodes = new List<Node>();
 
-                float leftColumn = node.NodeCenter.Item1 - GridIncrement;
-                float rightColumn = node.NodeCenter.Item1 + GridIncrement;
-                float bottomRow = node.NodeCenter.Item2 - GridIncrement;
-                float topRow = node.NodeCenter.Item2 + GridIncrement;
+                float leftColumn = node.X - GridIncrement;
+                float rightColumn = node.X + GridIncrement;
+                float bottomRow = node.Z - GridIncrement;
+                float topRow = node.Z + GridIncrement;
 
                 if (0 <= leftColumn)
-                    neighborNodes.Add(hashsetForNodes[node.NodeCenter.Item2][leftColumn]);
+                    neighborNodes.Add(hashsetForNodes[node.Z][leftColumn]);
 
                 if (GridWidth >= rightColumn)
-                    neighborNodes.Add(hashsetForNodes[node.NodeCenter.Item2][rightColumn]);
+                    neighborNodes.Add(hashsetForNodes[node.Z][rightColumn]);
 
                 if (0 <= bottomRow)
-                    neighborNodes.Add(hashsetForNodes[bottomRow][node.NodeCenter.Item1]);
+                    neighborNodes.Add(hashsetForNodes[bottomRow][node.X]);
 
                 if (GridHeight >= topRow)
-                    neighborNodes.Add(hashsetForNodes[topRow][node.NodeCenter.Item1]);
+                    neighborNodes.Add(hashsetForNodes[topRow][node.X]);
 
-                node.SetUpNeighbors(neighborNodes);
+                foreach(var neighbor in neighborNodes)
+                {
+                    node.Neighbors.Add(neighbor);
+                }
             }
         }
     }
