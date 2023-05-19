@@ -21,8 +21,7 @@ public class Leaf
     /// </summary>
     public Func<bool> Condition = null;
 
-    public Leaf RightLeaf;
-    public Leaf LeftLeaf;
+    public List<Leaf> ChildLeafs;
 
     /// <summary>
     /// If the condition is met, we retrieve the child leaf of the current leaf.
@@ -30,10 +29,11 @@ public class Leaf
     /// <returns></returns>
     public Leaf CheckCondition()
     {
-        if (RightLeaf.Condition())
-            return RightLeaf;
-        else if (LeftLeaf.Condition())
-            return LeftLeaf;
+        foreach(var childLeaf in ChildLeafs)
+        {
+            if (childLeaf.Condition())
+                return childLeaf;
+        }
         return null;
     }
 
