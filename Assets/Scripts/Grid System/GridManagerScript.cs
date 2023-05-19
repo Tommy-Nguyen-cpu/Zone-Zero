@@ -37,6 +37,9 @@ public class GridManagerScript : MonoBehaviour
                 newNode.Z = i;
                 newNode.X = j;
 
+                newNode.NodeWidth = GridIncrement;
+                newNode.NodeLength = GridIncrement;
+
                 FloorNodes.Add(newNode);
 
                 if (!hashsetForNodes.ContainsKey(i))

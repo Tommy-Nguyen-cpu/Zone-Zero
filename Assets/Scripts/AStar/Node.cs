@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class Node : IComparable
 {
+    #region Node Dimensions
     public float X;
     public float Z;
+    public float NodeWidth;
+    public float NodeLength;
+    #endregion
+
     public List<Node> Neighbors;
     public float StartScore;
     public float GoalScore;
