@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     #region Player Stats Field
     public float playerSpeed = 100f;
-    public float jumpHeight = 10f;
+    public float jumpHeight = 5f;
     #endregion
 
     public CharacterController controller;
@@ -81,12 +81,11 @@ public class PlayerController : MonoBehaviour
         // Get a vector telling us the direction the user is moving in.
         Vector3 move = transform.forward * z + transform.right * x;
 
-        Debug.Log("Is Grounded? " + isGrounded);
         // If the player is grounded and they click a "jump" button, using the physics equation to increase players y.
-        if (Input.GetButtonDown("Jump") && isGrounded)
+/*        if (Input.GetButtonDown("Jump") && isGrounded)
         {
             move.y += Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
+        }*/
 
         // Move the player in the direction, with a specific speed, and independent of frame rates.
         controller.Move(move * playerSpeed * Time.deltaTime);
@@ -117,7 +116,7 @@ public class PlayerController : MonoBehaviour
     {
         // Checks to see if the player hits the ground.
         isGrounded = Physics.CheckSphere(GroundCheck.position, groundDistance, groundMask);
-        Debug.Log("Is Grounded (2)? " + isGrounded);
+
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
