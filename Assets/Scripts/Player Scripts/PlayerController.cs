@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public Slider playerHealthBar;
+    public Gradient gradient;
+    public Image fill;
 
+    #region Player Stats Field
     public float playerSpeed = 100f;
     public float jumpHeight = 10f;
+    #endregion
 
     public CharacterController controller;
 
@@ -38,6 +44,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SetMaximumHealth();
     }
 
     // Update is called once per frame
@@ -74,6 +81,7 @@ public class PlayerController : MonoBehaviour
         // Get a vector telling us the direction the user is moving in.
         Vector3 move = transform.forward * z + transform.right * x;
 
+        Debug.Log("Is Grounded? " + isGrounded);
         // If the player is grounded and they click a "jump" button, using the physics equation to increase players y.
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
@@ -109,6 +117,7 @@ public class PlayerController : MonoBehaviour
     {
         // Checks to see if the player hits the ground.
         isGrounded = Physics.CheckSphere(GroundCheck.position, groundDistance, groundMask);
+        Debug.Log("Is Grounded (2)? " + isGrounded);
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
@@ -119,5 +128,23 @@ public class PlayerController : MonoBehaviour
 
         // Change in y is found via: 1/2*g * t^2. Where "g" is the gravitational constant and "t" is time.
         controller.Move(velocity * Time.deltaTime);
+    }
+
+
+    private void SetMaximumHealth()
+    {
+        SetHealth(1f);
+    }
+
+    private void SetHealth(float adjustAmount)
+    {
+        playerHealthBar.value += adjustAmount;
+
+        fill.color = gradient.Evaluate(playerHealthBar.normalizedValue);
+
+        if (playerHealthBar.value == 0)
+        {
+            // TODO: If the players health reaches 0, direct to "GAME OVER" screen;
+        }
     }
 }
