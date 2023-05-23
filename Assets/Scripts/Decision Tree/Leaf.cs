@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Leaf
 {
@@ -40,24 +41,24 @@ public class Leaf
     /// <summary>
     /// Method responsible for deciding which action to take depending on this leafs' "CurrentState".
     /// </summary>
-    public void Action()
+    public void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
         switch (CurrentState)
         {
             case LeafTypes.CHASE:
-                Chase();
+                Chase(player, myObject, runninSpeed, animator);
                 break;
             case LeafTypes.STUNNED:
-                Stunned();
+                Stunned(animator);
                 break;
             case LeafTypes.ATTACK:
-                Attack();
+                Attack(player, animator);
                 break;
             case LeafTypes.WIN:
                 Win();
                 break;
             default:
-                Idle();
+                Idle(animator);
                 break;
         }
     }
@@ -65,29 +66,71 @@ public class Leaf
 
     #region Action Type
 
-    public void Idle()
+    public void Idle(Animator animator)
     {
+        ResetAllBools(animator);
+        float randomValue = UnityEngine.Random.value;
+        if(randomValue > .5)
+        {
+            // TODO: Play the idle animation and nothing else.
+            animator.SetBool("IsIdle", true);
+        }
+        else
+        {
+            animator.SetBool("IsRunning", true);
+            // TODO: Find a path to some random location and move towards it.
+        }
+
         Debug.Log("Enemy is idling!");
     }
 
-    void Chase()
+    void Chase(GameObject player, GameObject myObject, float runningSpeed, Animator animator)
     {
+        ResetAllBools(animator);
+
+        myObject.transform.LookAt(player.transform);
+
+        animator.SetBool("IsRunning", true);
+        myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, player.transform.position, Time.deltaTime * runningSpeed);
+
         Debug.Log("Enemy is chasing!");
     }
 
-    void Stunned()
+    void Stunned(Animator animator)
     {
+        ResetAllBools(animator);
+        animator.SetBool("IsStunned", true);
         Debug.Log("Enemy is stunned!");
     }
 
-    void Attack()
+    void Attack(GameObject player, Animator animator)
     {
+        ResetAllBools(animator);
+        animator.SetBool("IsAttack", true);
         Debug.Log("Enemy is attacking!");
     }
 
     void Win()
     {
+        // TODO: Create the GAME OVER screen.
+        SceneManager.LoadScene(0);
         Debug.Log("Enemy wins!");
+    }
+
+    #endregion
+
+
+    #region Helper Methods
+
+    /// <summary>
+    /// Resets the animations.
+    /// </summary>
+    /// <param name="animator"></param>
+    private void ResetAllBools(Animator animator)
+    {
+        animator.SetBool("IsRunning", false);
+        animator.SetBool("IsAttacking", false);
+        animator.SetBool("IsIdle", false);
     }
 
     #endregion
