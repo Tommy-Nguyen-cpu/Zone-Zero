@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     public Image fill;
 
     #region Player Stats Field
-    public float playerSpeed = 100f;
+    // TODO: Sometimes the player moves too fast.
+    public float playerSpeed = .001f;
     public float jumpHeight = 5f;
     #endregion
 
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
         // Get a vector telling us the direction the user is moving in.
         Vector3 move = transform.forward * z + transform.right * x;
 
+        // TODO: I don't think we need the player to be able to jump.
         // If the player is grounded and they click a "jump" button, using the physics equation to increase players y.
 /*        if (Input.GetButtonDown("Jump") && isGrounded)
         {
