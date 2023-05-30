@@ -1069,7 +1069,7 @@ MonoBehaviour:
   controller: {fileID: 1990968436}
   pauseMenu: {fileID: 0}
   mouseSensitivity: 100
-  gravity: -9.81
+  gravity: -19.62
   groundMask:
     serializedVersion: 2
     m_Bits: 8

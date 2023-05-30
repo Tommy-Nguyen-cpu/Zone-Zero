@@ -29,6 +29,8 @@ public class GridManagerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // TODO: When we initialize a node, it is probably a better idea to remove any "obstacle" nodes before setting up neighborhoods.
+        // This might increase the complexity of the neighborhood setup though.
         for(float i = Origin.Item1; i <= GridWidth; i += GridIncrement)
         {
             for(float j = Origin.Item2; j <= GridHeight; j += GridIncrement)

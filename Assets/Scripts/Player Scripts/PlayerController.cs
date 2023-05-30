@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -137,7 +138,7 @@ public class PlayerController : MonoBehaviour
         SetHealth(1f);
     }
 
-    private void SetHealth(float adjustAmount)
+    public void SetHealth(float adjustAmount)
     {
         playerHealthBar.value += adjustAmount;
 
@@ -145,7 +146,8 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealthBar.value == 0)
         {
-            // TODO: If the players health reaches 0, direct to "GAME OVER" screen;
+            // If the players health reaches 0, direct to "GAME OVER" screen;
+            SceneManager.LoadScene(2);
         }
     }
 }
