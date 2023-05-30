@@ -31,7 +31,16 @@ public class AttackNode : Leaf
     {
         PlayerController controller = player.GetComponent<PlayerController>();
 
+        // TODO: Play the attack animation.
+        // TODO: I'll reanimate everything later on.
+        Debug.Log("Attacking!");
+
+
+        // TODO: We might not want to decrease the players health every time.
+        // I recalled we saying that we want there to be some sort of struggle mode, so this might be where
+        // we implement that.
+
         // Decreases players health
-        controller.SetHealth(-2);
+        controller.SetHealth(-.01f);
     }
 }
