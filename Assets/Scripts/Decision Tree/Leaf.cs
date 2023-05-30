@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Leaf
 {
-    public List<Leaf> ChildLeafs;
+    public List<Leaf> ChildLeafs = new List<Leaf>();
 
     /// <summary>
     /// If the condition is met, we retrieve the child leaf of the current leaf.
