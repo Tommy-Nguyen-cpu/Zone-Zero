@@ -22,7 +22,7 @@ public class ChaseNode : Leaf
     {
         myObject.transform.LookAt(player.transform);
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, player.transform.position, 1f);
-
+        Debug.Log("Chasing!");
         base.Action(player, myObject, runninSpeed, animator);
     }
 }

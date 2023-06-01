@@ -11,6 +11,7 @@ public class StunnedNode : Leaf
 
     public override void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
+        Debug.Log("Stunned!");
         base.Action(player, myObject, runninSpeed, animator);
     }
 }

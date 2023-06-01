@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GridManagerScript : MonoBehaviour
 {
-    float GridWidth = 100f;
-    float GridHeight = 100f;
+    float GridWidth = 50f;
+    float GridHeight = 50f;
 
-    (float, float) Origin = (0f, 0f);
+    (float, float) Origin = (-50f, -50f);
 
-    float GridIncrement = 10f;
+    public float GridIncrement = 10f;
 
     /// <summary>
     /// TODO: Used to allow us to more easily set up neighborhoods for nodes.
@@ -19,10 +19,7 @@ public class GridManagerScript : MonoBehaviour
     /// <summary>
     /// TODO: Used for A* search.
     /// </summary>
-    List<Node> FloorNodes = new List<Node>();
-
-    AStarAlgorithm algorithm = new AStarAlgorithm();
-    List<Node> PathToGoal = new List<Node>();
+    public List<Node> FloorNodes = new List<Node>();
 
     public GameObject Enemy;
 
@@ -60,8 +57,6 @@ public class GridManagerScript : MonoBehaviour
 
         SetUpNodeNeighborhoods();
 
-        PathToGoal = algorithm.FindPath(FloorNodes[0], FloorNodes[Random.Range(0, FloorNodes.Count)]);
-        Debug.Log("Nodes: " + PathToGoal.Count);
     }
 
     private void OnDrawGizmos()
@@ -71,31 +66,6 @@ public class GridManagerScript : MonoBehaviour
             Gizmos.color = Color.red;
 
             Gizmos.DrawWireCube(new Vector3(node.X, 0f, node.Z), new Vector3(GridIncrement, 10f, GridIncrement));
-        }
-
-
-        Node previousNode = PathToGoal[0];
-
-        Debug.Log($"Node has {previousNode.Neighbors.Count} neighbors");
-
-
-        Debug.Log($"Number of nodes in path: {PathToGoal.Count}");
-
-        for(int i = 1; i < PathToGoal.Count; i++)
-        {
-            Gizmos.color = Color.green;
-
-            Gizmos.DrawLine(new Vector3(previousNode.X, 10f, previousNode.Z), new Vector3(PathToGoal[i].X, 10f, PathToGoal[i].Z));
-            previousNode = PathToGoal[i];
-
-
-            // Colors the goal block.
-            if (i + 1 == PathToGoal.Count)
-            {
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawWireCube(new Vector3(PathToGoal[i].X, 0f, PathToGoal[i].Z), new Vector3(GridIncrement, 10f, GridIncrement));
-            }
-
         }
     }
 
