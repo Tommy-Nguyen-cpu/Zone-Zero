@@ -52,21 +52,20 @@ public class IdleNode : Leaf
 
         Debug.Log("Number of Nodes In Path: " + PathToGoal.Count);
 
-        float diffX = myObject.transform.position.x - GoalNode.X;
-        float diffZ = myObject.transform.position.z - GoalNode.Z;
+        float diffX = myObject.transform.position.x - PathToGoal[NextNode].X;
+        float diffZ = myObject.transform.position.z - PathToGoal[NextNode].Z;
         float distance = Mathf.Sqrt(diffX * diffX + diffZ * diffZ);
         if (distance == 0)
-            ReachedGoal = true;
-
-        diffX = myObject.transform.position.x - PathToGoal[NextNode].X;
-        diffZ = myObject.transform.position.z - PathToGoal[NextNode].Z;
-        distance = Mathf.Sqrt(diffX * diffX + diffZ * diffZ);
-        if (distance == 0)
+        {
             NextNode++;
+        }
 
         // If we reached the end of the path to goal list.
         if (NextNode >= PathToGoal.Count)
+        {
+            ReachedGoal = true;
             return;
+        }
 
         Vector3 targetPosition = new Vector3(PathToGoal[NextNode].X, myObject.transform.position.y, PathToGoal[NextNode].Z);
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, .1f);
