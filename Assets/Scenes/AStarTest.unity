@@ -504,6 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90928783fc542ad47b1abf27efe6dbcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GridIncrement: 10
   Enemy: {fileID: 1612592668}
 --- !u!4 &579622743
 Transform:
@@ -1079,7 +1080,7 @@ MonoBehaviour:
     m_NumColorKeys: 3
     m_NumAlphaKeys: 3
   fill: {fileID: 814644605}
-  playerSpeed: 100
+  playerSpeed: 10
   jumpHeight: 10
   controller: {fileID: 1990968436}
   pauseMenu: {fileID: 0}
