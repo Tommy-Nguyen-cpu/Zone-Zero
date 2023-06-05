@@ -7,7 +7,11 @@ public class IdleNode : Leaf
 
     AStarAlgorithm Pathfinding = new AStarAlgorithm();
     public List<Node> PathToGoal = new List<Node>();
+
     Node StartNode;
+
+    // Index of the start index
+    int index = -1;
     Node GoalNode;
     int NextNode = 1;
     
@@ -42,15 +46,22 @@ public class IdleNode : Leaf
         // If we reached the goal node, we will generate a new path
         if (ReachedGoal)
         {
-            NextNode = 1;
+            NextNode = 0;
             ReachedGoal = false;
-            StartNode = GridManager.FloorNodes[0];
-            GoalNode = GridManager.FloorNodes[Random.Range(1, GridManager.FloorNodes.Count)];
-            Debug.Log("Goal Position: " + GoalNode.X + ", " + GoalNode.Z);
+
+            // We only find the node the enemy is currently on at the start of the program.
+            // In all other instances, "StartNode" will be the previous "GoalNode" the enemy reached.
+            // TODO: What will we do if the enemy reaches the player and is no longer at the previous goal node?
+            if(StartNode == null || myObject.transform.position.x != StartNode.X || myObject.transform.position.z != StartNode.Z)
+                (StartNode, index) = NearestNode(myObject, GridManager.FloorNodes);
+
+            GoalNode = GridManager.FloorNodes[RandomIndex(index)];
             PathToGoal = Pathfinding.FindPath(StartNode, GoalNode);
+
+            Debug.Log("Path Count: " + PathToGoal.Count);
         }
 
-        Debug.Log("Number of Nodes In Path: " + PathToGoal.Count);
+        // Debug.Log("Number of Nodes In Path: " + PathToGoal.Count);
 
         float diffX = myObject.transform.position.x - PathToGoal[NextNode].X;
         float diffZ = myObject.transform.position.z - PathToGoal[NextNode].Z;
@@ -64,12 +75,65 @@ public class IdleNode : Leaf
         if (NextNode >= PathToGoal.Count)
         {
             ReachedGoal = true;
+            StartNode = GoalNode;
+            StartNode.Parent = null;
+            index = GridManager.FloorNodes.IndexOf(GoalNode);
             return;
         }
 
         Vector3 targetPosition = new Vector3(PathToGoal[NextNode].X, myObject.transform.position.y, PathToGoal[NextNode].Z);
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, .1f);
 
-        Debug.Log("Idling!");
+        //Debug.Log("Idling!");
+    }
+
+
+
+    /// <summary>
+    /// Iterates through all nodes to find the closest node to the enemys' current position.
+    /// </summary>
+    /// <param name="enemy"></param>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    private (Node, int) NearestNode(GameObject enemy, List<Node> path)
+    {
+        Node closeNode = path[0];
+        float myDistance = Distance(enemy, closeNode);
+        int index = 0;
+        
+        for(int i = 1; i < path.Count; i++)
+        {
+            float distance = Distance(enemy, path[i]);
+
+            if(distance < myDistance)
+            {
+                closeNode = path[i];
+                myDistance = distance;
+                index = i;
+            }
+        }
+
+        return (closeNode, index);
+    }
+
+    // TODO: Same thing as the "Heuristic" method in AStarAlgorithm class. We might want to consolidate all math methods in 1 class.
+    private float Distance(GameObject enemy, Node node)
+    {
+        float diffX = enemy.transform.position.x - node.X;
+        float diffZ = enemy.transform.position.z - node.Z;
+
+        return Mathf.Sqrt(Mathf.Pow(diffX, 2) + Mathf.Pow(diffZ, 2));
+    }
+
+
+    public int RandomIndex(int index)
+    {
+        int randIndex = -1;
+        do
+        {
+            randIndex = Random.Range(0, GridManager.FloorNodes.Count);
+        } while (randIndex == index);
+
+        return randIndex;
     }
 }

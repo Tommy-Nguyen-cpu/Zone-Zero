@@ -84,13 +84,13 @@ public class GridManagerScript : MonoBehaviour
                 float bottomRow = node.Z - GridIncrement;
                 float topRow = node.Z + GridIncrement;
 
-                if (0 <= leftColumn)
+                if (Origin.Item1 <= leftColumn)
                     neighborNodes.Add(hashsetForNodes[node.Z][leftColumn]);
 
                 if (GridWidth >= rightColumn)
                     neighborNodes.Add(hashsetForNodes[node.Z][rightColumn]);
 
-                if (0 <= bottomRow)
+                if (Origin.Item2 <= bottomRow)
                     neighborNodes.Add(hashsetForNodes[bottomRow][node.X]);
 
                 if (GridHeight >= topRow)
