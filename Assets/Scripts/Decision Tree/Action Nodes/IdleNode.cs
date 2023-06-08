@@ -43,6 +43,9 @@ public class IdleNode : Leaf
 
     public override void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
+
+        IsEnemyOnPath(myObject);
+
         // If we reached the goal node, we will generate a new path
         if (ReachedGoal)
         {
@@ -51,9 +54,11 @@ public class IdleNode : Leaf
 
             // We only find the node the enemy is currently on at the start of the program.
             // In all other instances, "StartNode" will be the previous "GoalNode" the enemy reached.
-            // TODO: What will we do if the enemy reaches the player and is no longer at the previous goal node?
-            if(StartNode == null || myObject.transform.position.x != StartNode.X || myObject.transform.position.z != StartNode.Z)
+            if(StartNode == null)
+            {
                 (StartNode, index) = NearestNode(myObject, GridManager.FloorNodes);
+                StartNode.Parent = null;
+            }
 
             GoalNode = GridManager.FloorNodes[RandomIndex(index)];
             PathToGoal = Pathfinding.FindPath(StartNode, GoalNode);
@@ -82,7 +87,7 @@ public class IdleNode : Leaf
         }
 
         Vector3 targetPosition = new Vector3(PathToGoal[NextNode].X, myObject.transform.position.y, PathToGoal[NextNode].Z);
-        myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, .1f);
+        myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, .03f);
 
         //Debug.Log("Idling!");
     }
@@ -135,5 +140,29 @@ public class IdleNode : Leaf
         } while (randIndex == index);
 
         return randIndex;
+    }
+
+    /// <summary>
+    /// We check to see if the enemy is on the path. The only time it is not, is if it chased the player but the player managed to escape.
+    /// </summary>
+    /// <param name="myObject"></param>
+    public void IsEnemyOnPath(GameObject myObject)
+    {
+        // Check to see if it is close to a node in the path.
+        float lowestDistance = 1000;
+        foreach (var node in PathToGoal)
+        {
+            float currentNodeDistance = Distance(myObject, node);
+
+            if (currentNodeDistance < lowestDistance)
+                lowestDistance = currentNodeDistance;
+        }
+
+        // If the enemy is far away from the node, we'll generate a new path with the current enemy location.
+        if (lowestDistance > 10)
+        {
+            ReachedGoal = true;
+            StartNode = null;
+        }
     }
 }
