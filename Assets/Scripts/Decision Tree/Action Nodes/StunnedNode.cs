@@ -6,6 +6,11 @@ public class StunnedNode : Leaf
 {
     public override bool CheckCondition(GameObject myGameObject, GameObject myPlayer)
     {
+        if (AttackNode.Attacked)
+        {
+            return true;
+        }
+
         return base.CheckCondition(myGameObject, myPlayer);
     }
 
@@ -13,5 +18,10 @@ public class StunnedNode : Leaf
     {
         Debug.Log("Stunned!");
         base.Action(player, myObject, runninSpeed, animator);
+
+        // TODO: Freeze the enemy for a couple of seconds.
+
+        // Resets flag.
+        AttackNode.Attacked = false;
     }
 }

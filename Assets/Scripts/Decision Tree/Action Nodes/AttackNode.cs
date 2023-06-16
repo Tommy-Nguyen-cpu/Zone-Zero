@@ -5,6 +5,11 @@ using UnityEngine;
 public class AttackNode : Leaf
 {
     /// <summary>
+    /// Flag that is turned on after enemy has attacked. Used by "StunnedNode".
+    /// </summary>
+    public static bool Attacked = false;
+
+    /// <summary>
     /// Checks to see if the player is within 2 feet of the player.
     /// </summary>
     /// <param name="myGameObject"></param>
@@ -17,7 +22,7 @@ public class AttackNode : Leaf
         if (distance < 2f)
             return true;
 
-        return false;
+        return base.CheckCondition(myGameObject, myPlayer);
     }
 
     /// <summary>
@@ -41,6 +46,8 @@ public class AttackNode : Leaf
         // we implement that.
 
         // Decreases players health
-        controller.SetHealth(-.01f);
+        // controller.SetHealth(-.01f);
+
+        Attacked = true;
     }
 }
