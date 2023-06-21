@@ -5937,7 +5937,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   myAnimator: {fileID: 0}
-  GridManager: {fileID: 0}
 --- !u!1 &9151016777157872290
 GameObject:
   m_ObjectHideFlags: 0

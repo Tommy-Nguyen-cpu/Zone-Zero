@@ -1,10 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Node : IComparable
 {
+    #region MazeFlags Modification
+    public MazeFlags flag;
+    public int2 myIndex;
+    #endregion
+
     #region Node Dimensions
     public float X;
     public float Z;

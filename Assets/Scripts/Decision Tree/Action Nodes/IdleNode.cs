@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class IdleNode : Leaf
@@ -13,10 +14,11 @@ public class IdleNode : Leaf
     // Index of the start index
     int index = -1;
     Node GoalNode;
+    int goalIndex = -1;
     int NextNode = 1;
     
     // TODO: Update this once Ian finishes his map generation script.
-    GridManagerScript GridManager;
+    Maze PCGMaze;
 
 
     /// <summary>
@@ -25,9 +27,9 @@ public class IdleNode : Leaf
     bool ReachedGoal = true;
 
     // TODO: Update this once Ian finishes his map generation script.
-    public IdleNode(GridManagerScript gridManager)
+    public IdleNode(Maze maze)
     {
-        GridManager = gridManager;
+        PCGMaze = maze;
     }
 
     /// <summary>
@@ -56,12 +58,14 @@ public class IdleNode : Leaf
             // In all other instances, "StartNode" will be the previous "GoalNode" the enemy reached.
             if(StartNode == null)
             {
-                (StartNode, index) = NearestNode(myObject, GridManager.FloorNodes);
+                (StartNode, index) = NearestNode(myObject);
                 StartNode.Parent = null;
             }
 
-            GoalNode = GridManager.FloorNodes[RandomIndex(index)];
-            PathToGoal = Pathfinding.FindPath(StartNode, GoalNode);
+            goalIndex = RandomIndex(index);
+            int2 coordinate = PCGMaze.IndexToCoordinates(goalIndex);
+            GoalNode = Pathfinding.CreateNode(coordinate, PCGMaze);
+            PathToGoal = Pathfinding.FindPath(StartNode, GoalNode, PCGMaze);
 
             Debug.Log("Path Count: " + PathToGoal.Count);
         }
@@ -82,11 +86,13 @@ public class IdleNode : Leaf
             ReachedGoal = true;
             StartNode = GoalNode;
             StartNode.Parent = null;
-            index = GridManager.FloorNodes.IndexOf(GoalNode);
+            index = goalIndex;
             return;
         }
 
         Vector3 targetPosition = new Vector3(PathToGoal[NextNode].X, myObject.transform.position.y, PathToGoal[NextNode].Z);
+        myObject.transform.LookAt(targetPosition);
+        
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, .03f);
 
         //Debug.Log("Idling!");
@@ -100,19 +106,20 @@ public class IdleNode : Leaf
     /// <param name="enemy"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    private (Node, int) NearestNode(GameObject enemy, List<Node> path)
+    private (Node, int) NearestNode(GameObject enemy)
     {
-        Node closeNode = path[0];
+        Node closeNode = Pathfinding.CreateNode(PCGMaze.IndexToCoordinates(0), PCGMaze);
         float myDistance = Distance(enemy, closeNode);
         int index = 0;
         
-        for(int i = 1; i < path.Count; i++)
+        for(int i = 1; i < PCGMaze.Length; i++)
         {
-            float distance = Distance(enemy, path[i]);
+            Node node = Pathfinding.CreateNode(PCGMaze.IndexToCoordinates(i), PCGMaze);
+            float distance = Distance(enemy, node);
 
             if(distance < myDistance)
             {
-                closeNode = path[i];
+                closeNode = node;
                 myDistance = distance;
                 index = i;
             }
@@ -136,7 +143,7 @@ public class IdleNode : Leaf
         int randIndex = -1;
         do
         {
-            randIndex = Random.Range(0, GridManager.FloorNodes.Count);
+            randIndex = UnityEngine.Random.Range(0, PCGMaze.Length);
         } while (randIndex == index);
 
         return randIndex;
@@ -148,6 +155,9 @@ public class IdleNode : Leaf
     /// <param name="myObject"></param>
     public void IsEnemyOnPath(GameObject myObject)
     {
+        if (PathToGoal == null)
+            return;
+
         // Check to see if it is close to a node in the path.
         float lowestDistance = 1000;
         foreach (var node in PathToGoal)

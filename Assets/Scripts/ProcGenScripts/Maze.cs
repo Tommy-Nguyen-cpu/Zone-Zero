@@ -42,6 +42,11 @@ public struct Maze
         return coordinates;
     }
 
+    public int CoordinatesToIndex(int2 coordinates)
+    {
+        return coordinates.x + size.x*coordinates.y;
+    }
+
     public Vector3 CoordinatesToWorldPosition(int2 coordinates, float y = 0f) => new Vector3(
         2f * coordinates.x + 1f - size.x,
         y,
