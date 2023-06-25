@@ -35,7 +35,6 @@ public class Game : MonoBehaviour
 
 	private void Awake()
     {
-		maze = new Maze(mazeSize);
 		player.NoteFound += NoteFound;
 		CreateMaze();
         player.StartNewGame(new Vector3(1f, -1f, 1f));
