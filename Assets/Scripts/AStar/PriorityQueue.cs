@@ -14,7 +14,6 @@ public class PriorityQueue
     {
         nodeQueue.Add(newNode);
         nodeQueue.Sort();
-
     }
 
     /// <summary>
@@ -35,7 +34,13 @@ public class PriorityQueue
 
     public bool Contains(Node childNode)
     {
-        return nodeQueue.Contains(childNode);
+        foreach(var node in nodeQueue)
+        {
+            if (node.X == childNode.X && node.Z == childNode.Z)
+                return true;
+        }
+
+        return false;
     }
 
 

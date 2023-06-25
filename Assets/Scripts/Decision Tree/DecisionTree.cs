@@ -10,7 +10,7 @@ public class DecisionTree : MonoBehaviour
 
 
     // TODO: Update this to be the script Ian makes for map generation.
-    public GridManagerScript GridManager;
+    public Maze PCGMaze;
 
 
     private Leaf root = new Leaf();
@@ -57,7 +57,7 @@ public class DecisionTree : MonoBehaviour
 
         root.ChildLeafs.Add(conditionalNode);
 
-        IdleNode idleNode = new IdleNode(GridManager);
+        IdleNode idleNode = new IdleNode(PCGMaze);
         root.ChildLeafs.Add(idleNode);
     }
 
@@ -74,6 +74,7 @@ public class DecisionTree : MonoBehaviour
             {
                 Gizmos.color = Color.green;
 
+                Debug.Log($"Line Drawn on {previousNode.X}, {previousNode.Z}");
                 Gizmos.DrawLine(new Vector3(previousNode.X, 10f, previousNode.Z), new Vector3(path[i].X, 10f, path[i].Z));
                 previousNode = path[i];
 
@@ -82,7 +83,7 @@ public class DecisionTree : MonoBehaviour
                 if (i + 1 == path.Count)
                 {
                     Gizmos.color = Color.yellow;
-                    Gizmos.DrawWireCube(new Vector3(path[i].X, 0f, path[i].Z), new Vector3(GridManager.GridIncrement, 10f, GridManager.GridIncrement));
+                    Gizmos.DrawWireCube(new Vector3(path[i].X, 0f, path[i].Z), new Vector3(1f, 1f, 1f));
                 }
 
             }

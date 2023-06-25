@@ -14,14 +14,14 @@ public class ChaseNode : Leaf
             return true;
         }
 
-        return false;
+        return base.CheckCondition(myGameObject, myPlayer);
     }
 
 
     public override void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
         myObject.transform.LookAt(player.transform);
-        myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, player.transform.position, 1f);
+        myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, player.transform.position, .1f);
         Debug.Log("Chasing!");
         base.Action(player, myObject, runninSpeed, animator);
     }
