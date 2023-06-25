@@ -53,38 +53,4 @@ public class MazeVisualization : ScriptableObject
 
 		_ => (xJunction, 0)
 	};
-
-	/**
-    public void Visualize (Maze maze)
-    {
-        for (int i = 0; i< maze.Length; i++)
-        {
-            MazeCellObject instance = xJunction.GetInstance();
-            instance.transform.localPosition = maze.IndexToWorldPosition(i);
-        }
-    }
-
-	MazeCellObject GetPrefab(MazeFlags flags) => flags switch
-	{
-		MazeFlags.PassageN => end,
-		MazeFlags.PassageE => end,
-		MazeFlags.PassageS => end,
-		MazeFlags.PassageW => end,
-
-		MazeFlags.PassageN | MazeFlags.PassageS => straight,
-		MazeFlags.PassageE | MazeFlags.PassageW => straight,
-
-		MazeFlags.PassageN | MazeFlags.PassageE => corner,
-		MazeFlags.PassageE | MazeFlags.PassageS => corner,
-		MazeFlags.PassageS | MazeFlags.PassageW => corner,
-		MazeFlags.PassageW | MazeFlags.PassageN => corner,
-
-		MazeFlags.PassageAll & ~MazeFlags.PassageW => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageN => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageE => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageS => tJunction,
-
-		_ => xJunction
-	**/
-
 }

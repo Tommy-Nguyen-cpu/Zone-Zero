@@ -49,5 +49,6 @@ public class Game : MonoBehaviour
     private void Update()
     {
 		player.Move();
+		//print(maze[399]);
     }
 }
