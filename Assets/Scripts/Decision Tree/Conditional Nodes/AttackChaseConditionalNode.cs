@@ -13,6 +13,6 @@ public class AttackChaseConditionalNode : Leaf
             return true;
         }
 
-        return false;
+        return base.CheckCondition(myGameObject, myPlayer);
     }
 }
