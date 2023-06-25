@@ -22,6 +22,7 @@ public class MazeVisualization : ScriptableObject
 
 	public void Visualize(Maze maze)
 	{
+		environment = new List<MazeCellObject>(0);
 		for (int i = 0; i < maze.Length; i++)
 		{
 			(MazeCellObject, int) prefabWithRotation = GetPrefab(maze[i]);
@@ -30,6 +31,7 @@ public class MazeVisualization : ScriptableObject
 			instance.transform.SetPositionAndRotation(
 				maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]
 			);
+			environment.Add(instance);
 		}
 	}
 	//Destroys environment. Used to reset the map.
