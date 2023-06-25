@@ -10,6 +10,8 @@ public class MazeVisualization : ScriptableObject
 
 	static float x = 270;
 
+	List<MazeCellObject> environment; //Keeps track of all MazeCellObjects
+
 	static Quaternion[] rotations =
 	{
 		Quaternion.Euler(x, 0f, 0f),
@@ -29,6 +31,17 @@ public class MazeVisualization : ScriptableObject
 				maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]
 			);
 		}
+	}
+	//Destroys environment. Used to reset the map.
+	public void ClearEnvironment()
+	{
+		foreach (MazeCellObject a in environment)
+		{
+			//environment.Remove(a);
+			Destroy(a.gameObject);
+		}
+		environment = new List<MazeCellObject>();
+		//environment.Clear();
 	}
 
 	(MazeCellObject, int) GetPrefab(MazeFlags flags) => flags switch
