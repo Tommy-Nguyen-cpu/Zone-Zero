@@ -14,17 +14,33 @@ public class Player : MonoBehaviour
     Transform eye;
     Vector2 eyeAngles;
 
-    bool awake = false;
+    CapsuleCollider collider;
 
+    int note_level = 0;
+    bool awake = false;
+    public delegate void NoteDelegate(); //NoteFound
+    public NoteDelegate NoteFound;
     private void Awake()
     {
         if (!awake)
         {
+            collider = GetComponent<CapsuleCollider>();
             characterController = GetComponent<CharacterController>();
             eye = transform.GetChild(0);
             awake = true;
         }
+    }
 
+
+    public void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Note")
+        {
+            note_level += 1;
+            NoteFound?.Invoke();
+            print("Found note!");
+            Destroy(collider.gameObject);
+        }
     }
 
     public void StartNewGame (Vector3 position)
@@ -88,5 +104,16 @@ public class Player : MonoBehaviour
         }
         eyeAngles.y = Mathf.Clamp(eyeAngles.y, -45f, 45f);
         eye.localRotation = Quaternion.Euler(eyeAngles.y, eyeAngles.x, 0f);
+    }
+    //This method is used when the player reaches the end without acquiring all notes. 
+    public void PlayerReset()
+    {
+        print("PLAYER RESET");
+        this.note_level = 0;
+    }
+
+    public int GetNoteLevel()
+    {
+        return this.note_level;
     }
 }

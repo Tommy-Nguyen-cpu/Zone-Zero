@@ -39,9 +39,6 @@ public struct GenerateMazeJob : IJob
 				randomActiveIndex = random.NextInt(firstActiveIndex, lastActiveIndex + 1);
 				index = activeIndices[randomActiveIndex];
 			}
-			//int randomActiveIndex = random.NextInt(firstActiveIndex, lastActiveIndex + 1);
-			//int index = activeIndices[randomActiveIndex];
-			//int index = activeIndices[lastActiveIndex];
 
 			int availablePassageCount = FindAvailablePassages(index, scratchpad);
 			if (availablePassageCount <= 1)

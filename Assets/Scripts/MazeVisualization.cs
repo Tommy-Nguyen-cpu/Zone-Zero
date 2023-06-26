@@ -10,6 +10,8 @@ public class MazeVisualization : ScriptableObject
 
 	static float x = 270;
 
+	List<MazeCellObject> environment; //Keeps track of all MazeCellObjects
+
 	static Quaternion[] rotations =
 	{
 		Quaternion.Euler(x, 0f, 0f),
@@ -20,6 +22,7 @@ public class MazeVisualization : ScriptableObject
 
 	public void Visualize(Maze maze)
 	{
+		environment = new List<MazeCellObject>(0);
 		for (int i = 0; i < maze.Length; i++)
 		{
 			(MazeCellObject, int) prefabWithRotation = GetPrefab(maze[i]);
@@ -28,7 +31,19 @@ public class MazeVisualization : ScriptableObject
 			instance.transform.SetPositionAndRotation(
 				maze.IndexToWorldPosition(i), rotations[prefabWithRotation.Item2]
 			);
+			environment.Add(instance);
 		}
+	}
+	//Destroys environment. Used to reset the map.
+	public void ClearEnvironment()
+	{
+		foreach (MazeCellObject a in environment)
+		{
+			//environment.Remove(a);
+			Destroy(a.gameObject);
+		}
+		environment = new List<MazeCellObject>();
+		//environment.Clear();
 	}
 
 	(MazeCellObject, int) GetPrefab(MazeFlags flags) => flags switch
@@ -53,38 +68,4 @@ public class MazeVisualization : ScriptableObject
 
 		_ => (xJunction, 0)
 	};
-
-	/**
-    public void Visualize (Maze maze)
-    {
-        for (int i = 0; i< maze.Length; i++)
-        {
-            MazeCellObject instance = xJunction.GetInstance();
-            instance.transform.localPosition = maze.IndexToWorldPosition(i);
-        }
-    }
-
-	MazeCellObject GetPrefab(MazeFlags flags) => flags switch
-	{
-		MazeFlags.PassageN => end,
-		MazeFlags.PassageE => end,
-		MazeFlags.PassageS => end,
-		MazeFlags.PassageW => end,
-
-		MazeFlags.PassageN | MazeFlags.PassageS => straight,
-		MazeFlags.PassageE | MazeFlags.PassageW => straight,
-
-		MazeFlags.PassageN | MazeFlags.PassageE => corner,
-		MazeFlags.PassageE | MazeFlags.PassageS => corner,
-		MazeFlags.PassageS | MazeFlags.PassageW => corner,
-		MazeFlags.PassageW | MazeFlags.PassageN => corner,
-
-		MazeFlags.PassageAll & ~MazeFlags.PassageW => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageN => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageE => tJunction,
-		MazeFlags.PassageAll & ~MazeFlags.PassageS => tJunction,
-
-		_ => xJunction
-	**/
-
 }
