@@ -13,6 +13,9 @@ public class Game : MonoBehaviour
 	
 	[SerializeField]
 	GameObject Enemy;
+	public UnityEngine.UI.Image QTImage;
+	public TMP_Text QTText;
+
 	[SerializeField]
 	MazeVisualization visualization;
 	[SerializeField, Range(0f, 1f)]
@@ -47,6 +50,12 @@ public class Game : MonoBehaviour
 		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
 		tree.PCGMaze = maze;
 		tree.Player = player.gameObject;
+
+		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
+		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
+		struggleSystem.Player = player.gameObject;
+		struggleSystem.QT = QTImage;
+		struggleSystem.tmpText = QTText;
 		#endregion
 
     }
@@ -62,7 +71,8 @@ public class Game : MonoBehaviour
 		{
 			ReachedEnd();
 			InputHandler();
-			player.Move();
+			if(player.enabled)
+				player.Move();
 		}
 	}
 
