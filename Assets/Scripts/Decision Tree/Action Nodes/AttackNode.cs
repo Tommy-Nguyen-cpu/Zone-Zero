@@ -21,11 +21,10 @@ public class AttackNode : Leaf
 
                 if (distance < 2f)
                     return true;*/
-
         Vector3 fwd = myGameObject.transform.TransformDirection(Vector3.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(myGameObject.transform.position, myGameObject.transform.forward, out hit, 1f))
+        if (Physics.Raycast(new Vector3(myGameObject.transform.position.x, 0f, myGameObject.transform.position.z), fwd, out hit, 1f))
         {
             if (hit.collider.name == "Player")
                 return true;
