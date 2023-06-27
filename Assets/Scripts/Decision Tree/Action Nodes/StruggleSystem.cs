@@ -13,11 +13,14 @@ public class StruggleSystem : MonoBehaviour
     private float QTFillAmount = .5f;
     private float TimeThreshold = 0f;
 
+    private bool Stop = false;
+
     List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C };
 
     private void OnEnable()
     {
         Debug.Log("Got to struggle!");
+        Stop = false;
         // Disables enemy tree and player movement.
         EnemyTree.enabled = false;
         Player.GetComponent<Player>().enabled = false;
@@ -33,27 +36,54 @@ public class StruggleSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(QTButton))
+        if (!Stop)
         {
-            // Debug.Log($"pressed {QTButton}!");
-            QTFillAmount += .2f;
-        }
-        TimeThreshold += Time.deltaTime;
+            if (Input.GetKeyDown(QTButton))
+            {
+                // Debug.Log($"pressed {QTButton}!");
+                QTFillAmount += .2f;
+            }
+            TimeThreshold += Time.deltaTime;
 
-        if(TimeThreshold > .02f)
-        {
-            TimeThreshold = 0f;
-            QTFillAmount -= .02f;
+            if (TimeThreshold > .02f)
+            {
+                TimeThreshold = 0f;
+                QTFillAmount -= .02f;
+            }
+            if (QTFillAmount < 0)
+                QTFillAmount = 0;
+
+            if (QTFillAmount >= 1)
+                EventSuccess();
+
+            QT.fillAmount = QTFillAmount;
         }
-        if (QTFillAmount < 0)
-            QTFillAmount = 0;
-        QT.fillAmount = QTFillAmount;
     }
 
 
     void EventSuccess()
     {
+        Player.GetComponent<Player>().enabled = true;
+        Player.GetComponent<CharacterController>().enabled = true;
+        Player.transform.rotation = Quaternion.identity;
+        StopAllCoroutines();
 
+        // Hides QT UI.
+        tmpText.text = "";
+        QT.fillAmount = 0f;
+        // TODO: Not entirely sure if we need the "StunnedNode" now since this will pause the enemy.
+        // Stuns the enemy.
+        Stop = true;
+        StartCoroutine(Wait());
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(5);
+
+        // After the enemy has been stunned for a couple of seconds, we enable the decision tree and disable struggle system script.
+        EnemyTree.enabled = true;
+        this.enabled = false;
     }
 
 
