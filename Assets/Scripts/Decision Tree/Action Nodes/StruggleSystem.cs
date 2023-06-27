@@ -29,6 +29,7 @@ public class StruggleSystem : MonoBehaviour
         // Picks random key for this quick time event run.
         QTButton = PotentialKeys[Random.Range(0, PotentialKeys.Count)];
         tmpText.text = QTButton.ToString();
+        QTFillAmount = .5f;
 
         Player.transform.LookAt(new Vector3(transform.position.x, -1*transform.position.y, transform.position.z));
     }
@@ -54,7 +55,9 @@ public class StruggleSystem : MonoBehaviour
                 QTFillAmount = 0;
 
             if (QTFillAmount >= 1)
+            {
                 EventSuccess();
+            }
 
             QT.fillAmount = QTFillAmount;
         }
@@ -70,7 +73,7 @@ public class StruggleSystem : MonoBehaviour
 
         // Hides QT UI.
         tmpText.text = "";
-        QT.fillAmount = 0f;
+        QTFillAmount = 0f;
         // TODO: Not entirely sure if we need the "StunnedNode" now since this will pause the enemy.
         // Stuns the enemy.
         Stop = true;
