@@ -9,7 +9,9 @@ public class StruggleSystem : MonoBehaviour
     public UnityEngine.UI.Image QT;
     public TMPro.TMP_Text tmpText;
     private KeyCode QTButton;
+
     private float QTFillAmount = .5f;
+    private float TimeThreshold = 0f;
 
     List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C };
 
@@ -36,8 +38,27 @@ public class StruggleSystem : MonoBehaviour
             // Debug.Log($"pressed {QTButton}!");
             QTFillAmount += .2f;
         }
-        if(QTFillAmount > 0)
-            QTFillAmount -= .05f;
-        QT.fillAmount += QTFillAmount;
+        TimeThreshold += Time.deltaTime;
+
+        if(TimeThreshold > .02f)
+        {
+            TimeThreshold = 0f;
+            QTFillAmount -= .02f;
+        }
+        if (QTFillAmount < 0)
+            QTFillAmount = 0;
+        QT.fillAmount = QTFillAmount;
+    }
+
+
+    void EventSuccess()
+    {
+
+    }
+
+
+    void EventFailed()
+    {
+
     }
 }
