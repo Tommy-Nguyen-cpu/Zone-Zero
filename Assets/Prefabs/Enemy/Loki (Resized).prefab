@@ -5916,7 +5916,7 @@ Transform:
   m_GameObject: {fileID: 9127188560434683584}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 0.03}
+  m_LocalScale: {x: 0.025, y: 0.025, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 239817298264078445}
@@ -5952,6 +5952,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyTree: {fileID: 0}
   Player: {fileID: 0}
+  QT: {fileID: 0}
+  tmpText: {fileID: 0}
 --- !u!1 &9151016777157872290
 GameObject:
   m_ObjectHideFlags: 0

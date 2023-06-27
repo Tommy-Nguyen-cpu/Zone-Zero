@@ -46,7 +46,7 @@ public class Game : MonoBehaviour
 
         int randomStartLocation = Random.Range(0, maze.Length);
 		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
-		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, startLocation.y, startLocation.z), Quaternion.identity);
+		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
 		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
 		tree.PCGMaze = maze;
 		tree.Player = player.gameObject;
