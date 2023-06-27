@@ -486,6 +486,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1492299663}
+  Hearts:
+  - {fileID: 34175985}
+  - {fileID: 1587002751}
+  - {fileID: 738512420}
   Enemy: {fileID: 9127188560434683584, guid: 83a280bd8a72a5845840dec360127271, type: 3}
   QTImage: {fileID: 1263212071}
   QTText: {fileID: 863636553}

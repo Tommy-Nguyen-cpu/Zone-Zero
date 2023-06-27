@@ -15,6 +15,9 @@ public class StruggleSystem : MonoBehaviour
 
     private bool Stop = false;
 
+    public delegate void HealthDecrement();
+    public HealthDecrement DecreaseHealth;
+
     List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C };
 
     private void OnEnable()
@@ -52,7 +55,10 @@ public class StruggleSystem : MonoBehaviour
                 QTFillAmount -= .02f;
             }
             if (QTFillAmount < 0)
+            {
                 QTFillAmount = 0;
+                EventFailed();
+            }
 
             if (QTFillAmount >= 1)
             {
@@ -66,6 +72,7 @@ public class StruggleSystem : MonoBehaviour
 
     void EventSuccess()
     {
+        DecreaseHealth?.Invoke();
         Player.GetComponent<Player>().enabled = true;
         Player.GetComponent<CharacterController>().enabled = true;
         Player.transform.rotation = Quaternion.identity;
@@ -92,6 +99,7 @@ public class StruggleSystem : MonoBehaviour
 
     void EventFailed()
     {
-
+        // TODO: Implement once win/lost state is implemented.
+        Debug.Log("Lost game!");
     }
 }

@@ -5,11 +5,13 @@ using Unity.Mathematics;
 using Random = UnityEngine.Random;
 
 using static Unity.Mathematics.math;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour
 {
 	[SerializeField]
 	Player player;
+	public List<UnityEngine.UI.Image> Hearts;
 	
 	[SerializeField]
 	GameObject Enemy;
@@ -56,6 +58,7 @@ public class Game : MonoBehaviour
 		struggleSystem.Player = player.gameObject;
 		struggleSystem.QT = QTImage;
 		struggleSystem.tmpText = QTText;
+		struggleSystem.DecreaseHealth += DecreaseHealth;
 		#endregion
 
     }
@@ -192,4 +195,25 @@ public class Game : MonoBehaviour
 		}
 		endFlag = false;
 	}
+
+
+	private void DecreaseHealth()
+    {
+		Debug.Log("Got to decrease heart method");
+		bool LostAllHearts = true;
+		foreach(var heart in Hearts)
+        {
+            if (heart.enabled)
+            {
+				LostAllHearts = false;
+				heart.enabled = false;
+				break;
+            }
+        }
+
+        if (LostAllHearts)
+        {
+			Debug.Log("Lost.");
+        }
+    }
 }
