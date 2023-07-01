@@ -31,11 +31,14 @@ public class Game : MonoBehaviour
 
 	public GameObject NotePrefab;
 
+	public NoteAppear note;
+
 	//TODO (IV): Make a Game Over Delegate and/or win Delegate for facilitating either good or bad ending...
 
 	private void Awake()
     {
 		player.NoteFound += NoteFound;
+		player.NoteDropped += NoteDropped;
 		CreateMaze();
         player.StartNewGame(new Vector3(1f, -1f, 1f));
 
@@ -107,17 +110,23 @@ public class Game : MonoBehaviour
 	{
 		if (player.GetNoteLevel() == 1)
 		{
-
+			note.note_txt_1.SetText("Note1");
 		}
 		else if (player.GetNoteLevel() == 2)
 		{
-
+			note.note_txt_1.SetText("Note2");
 		}
 		else if (player.GetNoteLevel() == 3)
 		{
-
+			note.note_txt_1.SetText("Note3");
 		}
+		note.ShowNote();
 	}
+
+	private void NoteDropped()
+    {
+		note.HideNote();
+    }
 
 	private void AddNote()
 	{
@@ -135,7 +144,9 @@ public class Game : MonoBehaviour
 		z = 1;
 
 		pos = new Vector3(x, 0, z);
-		Instantiate(NotePrefab, pos, Quaternion.identity);
+		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
+		go.transform.Rotate(new Vector3(0, 0, 90));
+
 		print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 	}
 

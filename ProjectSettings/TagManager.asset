@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Note
+  - Note1txt
+  - Note2txt
+  - Note3txt
   layers:
   - Default
   - TransparentFX
