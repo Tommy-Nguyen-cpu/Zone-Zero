@@ -108,7 +108,7 @@ public class Game : MonoBehaviour
 		tree.Player = player.gameObject;
 
 		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
-		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
+		struggleSystem.EnemyTree = tree;
 		struggleSystem.Player = player.gameObject;
 		struggleSystem.QT = QTImage;
 		struggleSystem.tmpText = QTText;

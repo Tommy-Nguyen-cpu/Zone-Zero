@@ -773,7 +773,7 @@ MonoBehaviour:
   - {fileID: 2135399644}
   - {fileID: 1304433689}
   Menu: {fileID: 1120961931}
-  Enemy: {fileID: 9127188560434683584, guid: 83a280bd8a72a5845840dec360127271, type: 3}
+  Enemy: {fileID: 6209124779617844932, guid: 0edfafcc9db9ebb43876f51c2210e65c, type: 3}
   QTImage: {fileID: 1806878209}
   QTText: {fileID: 328844915}
   visualization: {fileID: 11400000, guid: 473e69d40df80544a8d3d7139583c970, type: 2}
@@ -1448,7 +1448,7 @@ GameObject:
   - component: {fileID: 1492299661}
   - component: {fileID: 1492299663}
   - component: {fileID: 1492299664}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

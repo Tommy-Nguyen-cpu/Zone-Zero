@@ -6,21 +6,27 @@ using UnityEngine;
 public class DecisionTree : MonoBehaviour
 {
     public GameObject Player;
+    public LayerMask PlayerLayerMask;
+
+    public LayerMask ObstacleLayerMask;
+
+    public float Angle = 90f;
     public Animator myAnimator;
 
-
-    // TODO: Update this to be the script Ian makes for map generation.
     public Maze PCGMaze;
 
+    public enum AnimationType
+    {
+        WALKING, CHASING, IDLING, ATTACKING
+    }
 
     private Leaf root = new Leaf();
-    // Start is called before the first frame update
+
     void Start()
     {
         SetUpDecisionTree(root);
     }
 
-    // Update is called once per frame
     void Update()
     {
         Leaf currentLeaf = root;
@@ -47,20 +53,50 @@ public class DecisionTree : MonoBehaviour
     /// <param name="root"></param>
     void SetUpDecisionTree(Leaf root)
     {
-        AttackChaseConditionalNode conditionalNode = new AttackChaseConditionalNode();
         AttackNode attackNode = new AttackNode();
-        conditionalNode.ChildLeafs.Add(attackNode);
+        attackNode.ParentTree = this;
+        root.ChildLeafs.Add(attackNode);
         StunnedNode stunnedNode = new StunnedNode();
-        conditionalNode.ChildLeafs.Add(stunnedNode);
+        root.ChildLeafs.Add(stunnedNode);
         ChaseNode chaseNode = new ChaseNode();
-        conditionalNode.ChildLeafs.Add(chaseNode);
-
-        root.ChildLeafs.Add(conditionalNode);
+        chaseNode.ParentTree = this;
+        root.ChildLeafs.Add(chaseNode);
 
         IdleNode idleNode = new IdleNode(PCGMaze);
+        idleNode.ParentTree = this;
         root.ChildLeafs.Add(idleNode);
     }
 
+    public void PlayAnimation(AnimationType animationToPlay)
+    {
+        switch (animationToPlay)
+        {
+            case AnimationType.ATTACKING:
+                myAnimator.SetBool("IsIdle", false);
+                myAnimator.SetBool("IsRunning", false);
+                myAnimator.SetBool("IsWalking", false);
+                myAnimator.SetBool("IsAttacking", true);
+                break;
+            case AnimationType.CHASING:
+                myAnimator.SetBool("IsIdle", false);
+                myAnimator.SetBool("IsRunning", true);
+                myAnimator.SetBool("IsWalking", false);
+                myAnimator.SetBool("IsAttacking", false);
+                break;
+            case AnimationType.IDLING:
+                myAnimator.SetBool("IsIdle", true);
+                myAnimator.SetBool("IsRunning", false);
+                myAnimator.SetBool("IsWalking", false);
+                myAnimator.SetBool("IsAttacking", false);
+                break;
+            case AnimationType.WALKING:
+                myAnimator.SetBool("IsIdle", false);
+                myAnimator.SetBool("IsRunning", false);
+                myAnimator.SetBool("IsWalking", true);
+                myAnimator.SetBool("IsAttacking", false);
+                break;
+        }
+    }
 
     private void OnDrawGizmos()
     {

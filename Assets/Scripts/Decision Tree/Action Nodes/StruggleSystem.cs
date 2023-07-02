@@ -84,6 +84,8 @@ public class StruggleSystem : MonoBehaviour
         // TODO: Not entirely sure if we need the "StunnedNode" now since this will pause the enemy.
         // Stuns the enemy.
         Stop = true;
+
+        EnemyTree.PlayAnimation(DecisionTree.AnimationType.IDLING);
         StartCoroutine(Wait());
     }
 

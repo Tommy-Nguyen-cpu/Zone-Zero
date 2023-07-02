@@ -92,7 +92,8 @@ public class IdleNode : Leaf
 
         Vector3 targetPosition = new Vector3(PathToGoal[NextNode].X, myObject.transform.position.y, PathToGoal[NextNode].Z);
         myObject.transform.LookAt(targetPosition);
-        
+
+        ParentTree.PlayAnimation(DecisionTree.AnimationType.WALKING);
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, targetPosition, 1f * Time.deltaTime);
 
         //Debug.Log("Idling!");

@@ -56,6 +56,7 @@ public class AttackNode : Leaf
         // Decreases players health
         // controller.SetHealth(-.01f);
 
+        ParentTree.PlayAnimation(DecisionTree.AnimationType.ATTACKING);
         myObject.GetComponent<StruggleSystem>().enabled = true;
         Attacked = true;
     }
