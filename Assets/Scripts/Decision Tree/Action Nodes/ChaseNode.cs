@@ -29,6 +29,7 @@ public class ChaseNode : Leaf
 
     public override void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
+        ParentTree.PlayAnimation(DecisionTree.AnimationType.CHASING);
         myObject.transform.LookAt(player.transform);
         myObject.transform.position = Vector3.MoveTowards(myObject.transform.position, new Vector3(player.transform.position.x, myObject.transform.position.y, player.transform.position.z), 1.5f * Time.deltaTime);
         Debug.Log("Chasing!");
