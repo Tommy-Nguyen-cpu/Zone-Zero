@@ -12,7 +12,6 @@ public class Game : MonoBehaviour
 	[SerializeField]
 	Player player;
 	public List<UnityEngine.UI.Image> Hearts;
-	public GameObject Menu;
 	
 	[SerializeField]
 	GameObject Enemy;
@@ -46,10 +45,23 @@ public class Game : MonoBehaviour
         player.StartNewGame(new Vector3(1f, -1f, 1f));
 
 		#region Randomly Places Enemy In a cell.
-		ResetEnemy();
+
+        int randomStartLocation = Random.Range(0, maze.Length);
+		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
+		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
+		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
+		tree.PCGMaze = maze;
+		tree.Player = player.gameObject;
+
+		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
+		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
+		struggleSystem.Player = player.gameObject;
+		struggleSystem.QT = QTImage;
+		struggleSystem.tmpText = QTText;
+		struggleSystem.DecreaseHealth += DecreaseHealth;
 		#endregion
 
-	}
+    }
 
     private void OnDestroy()
     {
@@ -85,28 +97,6 @@ public class Game : MonoBehaviour
 		}
 		//TODO: Add statement to check if this is an even level
 		AddNote();
-	}
-
-
-	private void ResetEnemy()
-    {
-		// Useful for when we reset the map.
-		if(GameObject.Find("Loki (Resized) (1)"))
-			Destroy(Enemy);
-
-		int randomStartLocation = Random.Range(0, maze.Length);
-		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
-		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
-		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
-		tree.PCGMaze = maze;
-		tree.Player = player.gameObject;
-
-		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
-		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
-		struggleSystem.Player = player.gameObject;
-		struggleSystem.QT = QTImage;
-		struggleSystem.tmpText = QTText;
-		struggleSystem.DecreaseHealth += DecreaseHealth;
 	}
 
 	//Handles resetting player after a moving to next level
@@ -168,12 +158,7 @@ public class Game : MonoBehaviour
 		{
 			print("SPACE");
 			NewLevel();
-			ResetEnemy();
 		}
-		else if (Input.GetKey(KeyCode.Escape))
-        {
-			PauseGame();
-        }
 	}
 
 	//Generates a new level
@@ -182,7 +167,6 @@ public class Game : MonoBehaviour
 		ResetMaze();
 		CreateMaze();
 		ResetPlayer();
-		ResetEnemy();
 	}
 
 	//Handles when the player reaches the end of the map.
@@ -207,7 +191,6 @@ public class Game : MonoBehaviour
 			{
 				print("You did not escape. You must try AGAIN!");
 				player.PlayerReset();
-				ResetEnemy();
 			}
 		}
 		endFlag = false;
@@ -216,6 +199,7 @@ public class Game : MonoBehaviour
 
 	private void DecreaseHealth()
     {
+		Debug.Log("Got to decrease heart method");
 		bool LostAllHearts = true;
 		foreach(var heart in Hearts)
         {
@@ -229,32 +213,7 @@ public class Game : MonoBehaviour
 
         if (LostAllHearts)
         {
-			// TODO: Once the lose delegate is created, invoke it here.
 			Debug.Log("Lost.");
         }
     }
-
-	public void PauseGame()
-    {
-		Time.timeScale = 0;
-		Menu.SetActive(true);
-    }
-
-    #region Pause Menu Buttons
-	public void Continue()
-    {
-		Time.timeScale = 1;
-		Menu.SetActive(false);
-    }
-
-	public void Settings()
-    {
-
-    }
-
-    public void Quit()
-    {
-		Application.Quit(0);
-    }
-    #endregion
 }
