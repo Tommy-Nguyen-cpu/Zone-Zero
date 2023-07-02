@@ -14,17 +14,18 @@ public class Player : MonoBehaviour
     Transform eye;
     Vector2 eyeAngles;
 
-    CapsuleCollider collider;
+    CapsuleCollider player_collider;
 
     int note_level = 0;
     bool awake = false;
     public delegate void NoteDelegate(); //NoteFound
     public NoteDelegate NoteFound;
+    public NoteDelegate NoteDropped;
     private void Awake()
     {
         if (!awake)
         {
-            collider = GetComponent<CapsuleCollider>();
+            player_collider = GetComponent<CapsuleCollider>();
             characterController = GetComponent<CharacterController>();
             eye = transform.GetChild(0);
             awake = true;
@@ -39,7 +40,16 @@ public class Player : MonoBehaviour
             note_level += 1;
             NoteFound?.Invoke();
             print("Found note!");
-            Destroy(collider.gameObject);
+            //Destroy(collider.gameObject);
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Note")
+        {
+            NoteDropped?.Invoke();
+            Destroy(other.gameObject);
         }
     }
 
