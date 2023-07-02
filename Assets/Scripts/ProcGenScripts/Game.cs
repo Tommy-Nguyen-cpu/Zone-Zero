@@ -18,7 +18,6 @@ public class Game : MonoBehaviour
 	GameObject Enemy;
 	public UnityEngine.UI.Image QTImage;
 	public TMP_Text QTText;
-	GameObject instantiatedEnemy;
 
 	[SerializeField]
 	MazeVisualization visualization;
@@ -92,14 +91,12 @@ public class Game : MonoBehaviour
 	private void ResetEnemy()
     {
 		// Useful for when we reset the map.
-		if (instantiatedEnemy != null)
-		{
-			Destroy(instantiatedEnemy);
-		}
+		if(GameObject.Find("Loki (Resized) (1)"))
+			Destroy(Enemy);
 
 		int randomStartLocation = Random.Range(0, maze.Length);
 		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
-		instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
+		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
 		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
 		tree.PCGMaze = maze;
 		tree.Player = player.gameObject;
