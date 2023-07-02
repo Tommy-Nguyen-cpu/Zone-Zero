@@ -12,9 +12,11 @@ public class Game : MonoBehaviour
 	[SerializeField]
 	Player player;
 	public List<UnityEngine.UI.Image> Hearts;
+	public GameObject Menu;
 	
 	[SerializeField]
 	GameObject Enemy;
+	GameObject instantiatedEnemy;
 	public UnityEngine.UI.Image QTImage;
 	public TMP_Text QTText;
 
@@ -49,22 +51,10 @@ public class Game : MonoBehaviour
 
 		#region Randomly Places Enemy In a cell.
 
-        int randomStartLocation = Random.Range(0, maze.Length);
-		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
-		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
-		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
-		tree.PCGMaze = maze;
-		tree.Player = player.gameObject;
-
-		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
-		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
-		struggleSystem.Player = player.gameObject;
-		struggleSystem.QT = QTImage;
-		struggleSystem.tmpText = QTText;
-		struggleSystem.DecreaseHealth += DecreaseHealth;
+		ResetEnemy();
 		#endregion
 
-    }
+	}
 
     private void OnDestroy()
     {
@@ -100,6 +90,29 @@ public class Game : MonoBehaviour
 		}
 		//TODO: Add statement to check if this is an even level
 		AddNote();
+	}
+
+	private void ResetEnemy()
+	{
+		// Useful for when we reset the map.
+		if (instantiatedEnemy != null)
+		{
+			Destroy(instantiatedEnemy);
+		}
+
+		int randomStartLocation = Random.Range(0, maze.Length);
+		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
+		instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
+		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
+		tree.PCGMaze = maze;
+		tree.Player = player.gameObject;
+
+		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
+		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
+		struggleSystem.Player = player.gameObject;
+		struggleSystem.QT = QTImage;
+		struggleSystem.tmpText = QTText;
+		struggleSystem.DecreaseHealth += DecreaseHealth;
 	}
 
 	//Handles resetting player after a moving to next level
@@ -170,6 +183,10 @@ public class Game : MonoBehaviour
 			print("SPACE");
 			NewLevel();
 		}
+		else if (Input.GetKey(KeyCode.Escape))
+        {
+			PauseGame();
+        }
 	}
 
 	//Generates a new level
@@ -178,6 +195,7 @@ public class Game : MonoBehaviour
 		ResetMaze();
 		CreateMaze();
 		ResetPlayer();
+		ResetEnemy();
 	}
 
 	//Handles when the player reaches the end of the map.
@@ -202,11 +220,11 @@ public class Game : MonoBehaviour
 			{
 				print("You did not escape. You must try AGAIN!");
 				player.PlayerReset();
+				ResetEnemy();
 			}
 		}
 		endFlag = false;
 	}
-
 
 	private void DecreaseHealth()
     {
@@ -227,4 +245,29 @@ public class Game : MonoBehaviour
 			Debug.Log("Lost.");
         }
     }
+
+
+	#region Pause Menu Methods
+	private void PauseGame()
+	{
+		Time.timeScale = 0;
+		Menu.SetActive(true);
+	}
+
+	public void Continue()
+    {
+		Menu.SetActive(false);
+		Time.timeScale = 1;
+    }
+
+	public void Settings()
+    {
+		
+    }
+
+	public void Quit()
+    {
+		Application.Quit();
+    }
+	#endregion
 }
