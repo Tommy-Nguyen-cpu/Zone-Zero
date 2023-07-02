@@ -6,26 +6,22 @@ public class ChaseNode : Leaf
 {
     public override bool CheckCondition(GameObject myGameObject, GameObject myPlayer)
     {
-        // TODO: Once I have time, I'll implement a raycasting system.
-/*        float distance = Mathf.Abs(Vector3.Distance(myGameObject.transform.position, myPlayer.transform.position));
-        
-        if(distance <= 10f)
+        Collider[] checks = Physics.OverlapSphere(myGameObject.transform.position, 100f, ParentTree.PlayerLayerMask);
+
+        if (checks.Length > 0)
         {
-            return true;
-        }*/
-
-        Vector3 fwd = myGameObject.transform.TransformDirection(Vector3.forward);
-        RaycastHit hit;
-
-        IsWithinView(myGameObject, myPlayer, 100, .9f);
-
-        if (Physics.Raycast(new Vector3(myGameObject.transform.position.x, 0f, myGameObject.transform.position.z), myGameObject.transform.forward, out hit, 100f))
-        {
-            if (hit.collider.name == "Player")
-                return true;
+            Vector3 directionToPlayer = (myPlayer.transform.position - myGameObject.transform.position).normalized;
+            if (Vector3.Angle(myGameObject.transform.forward, directionToPlayer) < ParentTree.Angle / 2)
+            {
+                float distanceToPlayer = Vector3.Distance(myGameObject.transform.position, myPlayer.transform.position);
+                if (!Physics.Raycast(myGameObject.transform.position, directionToPlayer, distanceToPlayer, ParentTree.ObstacleLayerMask))
+                {
+                    return true;
+                }
+            }
         }
 
-        
+
 
         return base.CheckCondition(myGameObject, myPlayer);
     }

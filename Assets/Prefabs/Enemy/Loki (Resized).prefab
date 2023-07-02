@@ -5937,6 +5937,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  PlayerLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  ObstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  Angle: 90
   myAnimator: {fileID: 0}
 --- !u!114 &8256808496999094404
 MonoBehaviour:

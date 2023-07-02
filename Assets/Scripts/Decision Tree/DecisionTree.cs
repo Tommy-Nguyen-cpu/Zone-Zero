@@ -6,6 +6,11 @@ using UnityEngine;
 public class DecisionTree : MonoBehaviour
 {
     public GameObject Player;
+    public LayerMask PlayerLayerMask;
+
+    public LayerMask ObstacleLayerMask;
+
+    public float Angle = 90f;
     public Animator myAnimator;
 
 
@@ -47,15 +52,13 @@ public class DecisionTree : MonoBehaviour
     /// <param name="root"></param>
     void SetUpDecisionTree(Leaf root)
     {
-        AttackChaseConditionalNode conditionalNode = new AttackChaseConditionalNode();
         AttackNode attackNode = new AttackNode();
-        conditionalNode.ChildLeafs.Add(attackNode);
+        root.ChildLeafs.Add(attackNode);
         StunnedNode stunnedNode = new StunnedNode();
-        conditionalNode.ChildLeafs.Add(stunnedNode);
+        root.ChildLeafs.Add(stunnedNode);
         ChaseNode chaseNode = new ChaseNode();
-        conditionalNode.ChildLeafs.Add(chaseNode);
-
-        root.ChildLeafs.Add(conditionalNode);
+        chaseNode.ParentTree = this;
+        root.ChildLeafs.Add(chaseNode);
 
         IdleNode idleNode = new IdleNode(PCGMaze);
         root.ChildLeafs.Add(idleNode);

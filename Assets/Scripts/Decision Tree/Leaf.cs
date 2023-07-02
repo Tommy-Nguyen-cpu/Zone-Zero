@@ -6,6 +6,8 @@ public class Leaf
 {
     public List<Leaf> ChildLeafs = new List<Leaf>();
 
+    public DecisionTree ParentTree;
+
     /// <summary>
     /// If the condition is met, we retrieve the child leaf of the current leaf.
     /// </summary>
