@@ -17,10 +17,18 @@ public class AttackNode : Leaf
     /// <returns></returns>
     public override bool CheckCondition(GameObject myGameObject, GameObject myPlayer)
     {
-        float distance = Mathf.Abs(Vector3.Distance(myGameObject.transform.position, myPlayer.transform.position));
+        /*        float distance = Mathf.Abs(Vector3.Distance(myGameObject.transform.position, myPlayer.transform.position));
 
-        if (distance < 2f)
-            return true;
+                if (distance < 2f)
+                    return true;*/
+        Vector3 fwd = myGameObject.transform.TransformDirection(Vector3.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(new Vector3(myGameObject.transform.position.x, 0f, myGameObject.transform.position.z), fwd, out hit, 1f))
+        {
+            if (hit.collider.name == "Player")
+                return true;
+        }
 
         return base.CheckCondition(myGameObject, myPlayer);
     }
@@ -48,6 +56,7 @@ public class AttackNode : Leaf
         // Decreases players health
         // controller.SetHealth(-.01f);
 
+        myObject.GetComponent<StruggleSystem>().enabled = true;
         Attacked = true;
     }
 }

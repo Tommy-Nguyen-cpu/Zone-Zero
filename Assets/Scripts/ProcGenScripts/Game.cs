@@ -5,14 +5,19 @@ using Unity.Mathematics;
 using Random = UnityEngine.Random;
 
 using static Unity.Mathematics.math;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour
 {
 	[SerializeField]
 	Player player;
+	public List<UnityEngine.UI.Image> Hearts;
 	
 	[SerializeField]
 	GameObject Enemy;
+	public UnityEngine.UI.Image QTImage;
+	public TMP_Text QTText;
+
 	[SerializeField]
 	MazeVisualization visualization;
 	[SerializeField, Range(0f, 1f)]
@@ -46,10 +51,17 @@ public class Game : MonoBehaviour
 
         int randomStartLocation = Random.Range(0, maze.Length);
 		Vector3 startLocation = maze.IndexToWorldPosition(randomStartLocation);
-		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, startLocation.y, startLocation.z), Quaternion.identity);
+		GameObject instantiatedEnemy = Instantiate(Enemy, new Vector3(startLocation.x, -1f, startLocation.z), Quaternion.identity);
 		DecisionTree tree = instantiatedEnemy.GetComponent<DecisionTree>();
 		tree.PCGMaze = maze;
 		tree.Player = player.gameObject;
+
+		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
+		struggleSystem.EnemyTree = instantiatedEnemy.GetComponent<DecisionTree>();
+		struggleSystem.Player = player.gameObject;
+		struggleSystem.QT = QTImage;
+		struggleSystem.tmpText = QTText;
+		struggleSystem.DecreaseHealth += DecreaseHealth;
 		#endregion
 
     }
@@ -65,7 +77,8 @@ public class Game : MonoBehaviour
 		{
 			ReachedEnd();
 			InputHandler();
-			player.Move();
+			if(player.enabled)
+				player.Move();
 		}
 	}
 
@@ -193,4 +206,25 @@ public class Game : MonoBehaviour
 		}
 		endFlag = false;
 	}
+
+
+	private void DecreaseHealth()
+    {
+		Debug.Log("Got to decrease heart method");
+		bool LostAllHearts = true;
+		foreach(var heart in Hearts)
+        {
+            if (heart.enabled)
+            {
+				LostAllHearts = false;
+				heart.enabled = false;
+				break;
+            }
+        }
+
+        if (LostAllHearts)
+        {
+			Debug.Log("Lost.");
+        }
+    }
 }

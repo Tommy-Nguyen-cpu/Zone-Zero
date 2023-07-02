@@ -130,72 +130,72 @@ public class AStarAlgorithm
         switch (myFlags)
         {
             case MazeFlags.PassageN:
-                Debug.Log("Has north.");
+                // Debug.Log("Has north.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 break;
             case MazeFlags.PassageS:
-                Debug.Log("Has south.");
+                // Debug.Log("Has south.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageE:
-                Debug.Log("Has east.");
+                // Debug.Log("Has east.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 break;
             case MazeFlags.PassageW:
-                Debug.Log("Has west");
+                // Debug.Log("Has west");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 break;
             case MazeFlags.PassageN | MazeFlags.PassageS:
-                Debug.Log("Has north and south");
+                // Debug.Log("Has north and south");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageE | MazeFlags.PassageW:
-                Debug.Log("Has east and west");
+                // Debug.Log("Has east and west");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 break;
             case MazeFlags.PassageN | MazeFlags.PassageE:
-                Debug.Log("has north and east.");
+                // Debug.Log("has north and east.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 break;
             case MazeFlags.PassageE | MazeFlags.PassageS:
-                Debug.Log("Has east and south.");
+                // Debug.Log("Has east and south.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageS | MazeFlags.PassageW:
-                Debug.Log("Has south and west.");
+                // Debug.Log("Has south and west.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 break;
             case MazeFlags.PassageW | MazeFlags.PassageN:
-                Debug.Log("Has west and north");
+                // Debug.Log("Has west and north");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 break;
 
             case MazeFlags.PassageAll & ~MazeFlags.PassageW:
-                Debug.Log("Has all except for west.");
+                // Debug.Log("Has all except for west.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageAll & ~MazeFlags.PassageN:
-                Debug.Log("Has all except for north.");
+                // Debug.Log("Has all except for north.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageAll & ~MazeFlags.PassageE:
-                Debug.Log("Has all except for east.");
+                // Debug.Log("Has all except for east.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y - 1), maze));
                 break;
             case MazeFlags.PassageAll & ~MazeFlags.PassageS:
-                Debug.Log("Has all except for south.");
+                // Debug.Log("Has all except for south.");
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x + 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x - 1, nodeToExpand.myIndex.y), maze));
                 neighbors.Add(CreateNode(CreateNewCoordinate(nodeToExpand.myIndex.x, nodeToExpand.myIndex.y + 1), maze));
