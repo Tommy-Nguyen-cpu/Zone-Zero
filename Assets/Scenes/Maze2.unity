@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 561037154}
   - component: {fileID: 561037153}
   m_Layer: 5
-  m_Name: Continue (2)
+  m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -602,7 +602,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 561037154}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 638681184}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &561037154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,7 +772,7 @@ MonoBehaviour:
   - {fileID: 34175985}
   - {fileID: 2135399644}
   - {fileID: 1304433689}
-  Menu: {fileID: 0}
+  Menu: {fileID: 1120961931}
   Enemy: {fileID: 9127188560434683584, guid: 83a280bd8a72a5845840dec360127271, type: 3}
   QTImage: {fileID: 1806878209}
   QTText: {fileID: 328844915}
@@ -1146,7 +1158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1120961932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1590,7 +1602,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1504306769}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 638681184}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: Continue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1504306769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2055,7 +2079,7 @@ GameObject:
   - component: {fileID: 2086017611}
   - component: {fileID: 2086017610}
   m_Layer: 5
-  m_Name: Continue (1)
+  m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2125,7 +2149,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2086017611}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 638681184}
+        m_TargetAssemblyTypeName: Game, Assembly-CSharp
+        m_MethodName: Settings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2086017611
 MonoBehaviour:
   m_ObjectHideFlags: 0

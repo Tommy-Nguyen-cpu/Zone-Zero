@@ -254,18 +254,18 @@ public class Game : MonoBehaviour
 		Menu.SetActive(true);
 	}
 
-	private void Continue()
+	public void Continue()
     {
 		Menu.SetActive(false);
 		Time.timeScale = 1;
     }
 
-	private void Settings()
+	public void Settings()
     {
 		
     }
 
-	private void Quit()
+	public void Quit()
     {
 		Application.Quit();
     }
