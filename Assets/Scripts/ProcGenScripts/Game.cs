@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 using static Unity.Mathematics.math;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -39,6 +40,10 @@ public class Game : MonoBehaviour
 	public GameObject NotePrefab;
 
 	public NoteAppear note;
+	public GameOverUI GO_ui;
+
+	private GameObject current_note;
+
 
 	//TODO (IV): Make a Game Over Delegate and/or win Delegate for facilitating either good or bad ending...
 
@@ -63,13 +68,11 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-		if (!gameOver) //Maybe change for a GetterFunc that checks current state of the game
-		{
-			ReachedEnd();
-			InputHandler();
-			if(player.enabled)
-				player.Move();
-		}
+		ReachedEnd();
+		InputHandler();
+		if(player.enabled)
+			player.Move();
+
 	}
 
 	private void CreateMaze()
@@ -149,6 +152,7 @@ public class Game : MonoBehaviour
 		note.ShowNote();
 	}
 
+	//hides Note UI
 	private void NoteDropped()
     {
 		note.HideNote();
@@ -172,6 +176,7 @@ public class Game : MonoBehaviour
 		pos = new Vector3(x, 0, z);
 		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
 		go.transform.Rotate(new Vector3(0, 0, 90));
+		current_note = go;
 
 		print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 	}
@@ -181,7 +186,7 @@ public class Game : MonoBehaviour
 		if (Input.GetKey("space"))
 		{
 			print("SPACE");
-			NewLevel();
+			DEBUGWIN();
 		}
 		else if (Input.GetKey(KeyCode.Escape))
         {
@@ -192,10 +197,38 @@ public class Game : MonoBehaviour
 	//Generates a new level
 	private void NewLevel()
 	{
+		Destroy(current_note.gameObject);
 		ResetMaze();
 		CreateMaze();
 		ResetPlayer();
 		ResetEnemy();
+	}
+
+	//Debug Method to Test Win Conditions
+	private void DEBUGWIN()
+    {
+		print("The current level is: " + level.ToString());
+		if (player.GetNoteLevel() >= 3) //If you've found all the notes
+		{
+			Time.timeScale = 0;
+			GO_ui.ShowWinScreen();
+			//gameOver = true;
+		}
+		else //Reset map
+		{
+			level += 1;
+			endFlag = true;
+			print("Reached End!");
+			NewLevel();
+		}
+		if (this.level >= 3) //If you reach the last map without finding all notes
+		{
+			Time.timeScale = 0;
+			GO_ui.ShowGameOver();
+			//print("You did not escape. You must try AGAIN!");
+			//player.PlayerReset();
+			//ResetEnemy();
+		}
 	}
 
 	//Handles when the player reaches the end of the map.
@@ -206,24 +239,53 @@ public class Game : MonoBehaviour
 		{
 			if (player.GetNoteLevel() >= 3) //If you've found all the notes
 			{
-				print("You Escaped");
+				Time.timeScale = 0;
+				GO_ui.ShowWinScreen();
 				gameOver = true;
 			}
 			else //Reset map
 			{
-				endFlag = true;
 				level += 1;
+				endFlag = true;
 				print("Reached End!");
 				NewLevel();
 			}
 			if (this.level == 5) //If you reach the last map without finding all notes
 			{
-				print("You did not escape. You must try AGAIN!");
-				player.PlayerReset();
-				ResetEnemy();
+				Time.timeScale = 0;
+				GO_ui.ShowGameOver();
+				//print("You did not escape. You must try AGAIN!");
+				//player.PlayerReset();
+				//ResetEnemy();
 			}
 		}
+		
 		endFlag = false;
+	}
+
+	//resets all flags and values
+	public void GameReset()
+    {
+		level = 0;
+		Time.timeScale = 1;
+		player.PlayerReset();
+		ResetEnemy();
+		NewLevel();
+		GO_ui.clear();
+    }
+
+	//UI METHODS
+
+	public void ResetButton()
+    {
+		///This is run when the reset button is pressed
+		GameReset();
+    }
+
+	public void QuitButton()
+    {
+		GameReset();
+		SceneManager.LoadScene("Main Menu");
 	}
 
 	private void DecreaseHealth()

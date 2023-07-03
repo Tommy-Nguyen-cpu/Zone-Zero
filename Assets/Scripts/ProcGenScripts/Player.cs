@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
         {
             note_level += 1;
             NoteFound?.Invoke();
-            print("Found note!");
+            print("Found note!" + note_level.ToString());
             //Destroy(collider.gameObject);
         }
     }
