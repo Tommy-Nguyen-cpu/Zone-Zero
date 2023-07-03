@@ -49,6 +49,9 @@ public class Game : MonoBehaviour
 
 	private void Awake()
     {
+		// Locks the cursor so we don't see the cursor while playing the game.
+		Cursor.lockState = CursorLockMode.Locked;
+
 		player.NoteFound += NoteFound;
 		player.NoteDropped += NoteDropped;
 		CreateMaze();
@@ -190,6 +193,7 @@ public class Game : MonoBehaviour
 		}
 		else if (Input.GetKey(KeyCode.Escape))
         {
+			Cursor.lockState = CursorLockMode.None;
 			PauseGame();
         }
 	}
@@ -318,6 +322,7 @@ public class Game : MonoBehaviour
 
 	public void Continue()
     {
+		Cursor.lockState = CursorLockMode.Locked;
 		Menu.SetActive(false);
 		Time.timeScale = 1;
     }
