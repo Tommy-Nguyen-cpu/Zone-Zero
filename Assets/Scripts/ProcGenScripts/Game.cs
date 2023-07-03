@@ -33,9 +33,7 @@ public class Game : MonoBehaviour
     [SerializeField, Tooltip("Use zero for random seed.")]
     int seed;
 
-	bool endFlag = false;
 	int level = 0;
-	bool gameOver = false;
 
 	public GameObject NotePrefab;
 
@@ -45,7 +43,19 @@ public class Game : MonoBehaviour
 	private GameObject current_note;
 
 
-	//TODO (IV): Make a Game Over Delegate and/or win Delegate for facilitating either good or bad ending...
+
+
+	/* Helper Functions:
+	 *	-GameRestart() - Resets Flags
+	 *  -RespawnEntities() - Places Player, Enemy and Note at default positions
+	 *  -EndLevel() - Checks flags and performs relevant actions
+	 *  -GameReset() - Performed at GameOver, performs all three of the above
+	 *  
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 
 	private void Awake()
     {
@@ -55,6 +65,7 @@ public class Game : MonoBehaviour
 		player.NoteFound += NoteFound;
 		player.NoteDropped += NoteDropped;
 		CreateMaze();
+		AddNote();
         player.StartNewGame(new Vector3(1f, -1f, 1f));
 
 		#region Randomly Places Enemy In a cell.
@@ -95,7 +106,6 @@ public class Game : MonoBehaviour
 			Random.InitState(seed);
 		}
 		//TODO: Add statement to check if this is an even level
-		AddNote();
 	}
 
 	private void ResetEnemy()
@@ -188,8 +198,7 @@ public class Game : MonoBehaviour
 	{
 		if (Input.GetKey("space"))
 		{
-			print("SPACE");
-			DEBUGWIN();
+			EndLevel();
 		}
 		else if (Input.GetKey(KeyCode.Escape))
         {
@@ -198,83 +207,71 @@ public class Game : MonoBehaviour
         }
 	}
 
-	//Generates a new level
-	private void NewLevel()
-	{
-		Destroy(current_note.gameObject);
-		ResetMaze();
-		CreateMaze();
+	//Places player, enemy and notes at default positions.
+	private void ResetEntities()
+    {
 		ResetPlayer();
 		ResetEnemy();
 	}
 
-	//Debug Method to Test Win Conditions
-	private void DEBUGWIN()
+	//Resets game flags. Used after GameOver to restart game
+	private void RestartGame()
     {
+		player.PlayerReset();
+		this.level = 0;
+    }
+
+	//Generates a new level
+	private void NewLevel()
+	{
+		if (!current_note.Equals(null)) 
+			Destroy(current_note.gameObject);
+		ResetMaze();
+		CreateMaze();
+		AddNote(); 
+	}
+
+	private void EndLevel()
+    {
+		level += 1;
 		print("The current level is: " + level.ToString());
-		if (player.GetNoteLevel() >= 3) //If you've found all the notes
+		if (player.GetNoteLevel()==3) //If you've found all the notes
 		{
 			Time.timeScale = 0;
+			Cursor.lockState = CursorLockMode.None;
 			GO_ui.ShowWinScreen();
 			//gameOver = true;
-		}
-		else //Reset map
-		{
-			level += 1;
-			endFlag = true;
-			print("Reached End!");
-			NewLevel();
-		}
-		if (this.level >= 3) //If you reach the last map without finding all notes
+		} else if (this.level > 2) //If you reach the last map without finding all notes
 		{
 			Time.timeScale = 0;
+			Cursor.lockState = CursorLockMode.None;
 			GO_ui.ShowGameOver();
-			//print("You did not escape. You must try AGAIN!");
-			//player.PlayerReset();
-			//ResetEnemy();
 		}
+		else //Reset map and entities, increase level by 1
+		{
+			NewLevel();
+			ResetEntities();
+		}
+
 	}
 
 	//Handles when the player reaches the end of the map.
 	private void ReachedEnd()
 	{
 		Vector3 pos = player.transform.position;
-		if (!endFlag && pos.x <= -18 && pos.z <= -18)
+		if (pos.x <= -18 && pos.z <= -18)
 		{
-			if (player.GetNoteLevel() >= 3) //If you've found all the notes
-			{
-				Time.timeScale = 0;
-				GO_ui.ShowWinScreen();
-				gameOver = true;
-			}
-			else //Reset map
-			{
-				level += 1;
-				endFlag = true;
-				print("Reached End!");
-				NewLevel();
-			}
-			if (this.level == 5) //If you reach the last map without finding all notes
-			{
-				Time.timeScale = 0;
-				GO_ui.ShowGameOver();
-				//print("You did not escape. You must try AGAIN!");
-				//player.PlayerReset();
-				//ResetEnemy();
-			}
+			EndLevel();
 		}
-		
-		endFlag = false;
 	}
 
 	//resets all flags and values
 	public void GameReset()
     {
-		level = 0;
 		Time.timeScale = 1;
-		player.PlayerReset();
-		ResetEnemy();
+		RestartGame();
 		NewLevel();
+		ResetEntities();
 		GO_ui.clear();
     }
 
