@@ -23,17 +23,17 @@ public class EnemyAudioManager : MonoBehaviour
         //getcurrentstate
     }
 
-    private void playIdleSequentially()
+    public void reset_unchanged_state()
     {
-
+        unchaged_state = false;
     }
 
     IEnumerator playIdleAudioSequentially()
     {
         yield return null;
 
-        while (unchaged_state)
-        {
+        //while (unchaged_state)
+        //{
             for (int i = 0; i < idle_clips.Length; i++)
             {
                 idle_sound.clip = idle_clips[i];
@@ -45,31 +45,33 @@ public class EnemyAudioManager : MonoBehaviour
                     yield return null;
                 }
             }
-        }
+        //}
     }
 
     IEnumerator playChaseAudioSequentially()
     {
         yield return null;
-        for (int i=0; i < chase_clips.Length; i++)
-        {
-            idle_sound.clip = chase_clips[i];
-
-            idle_sound.Play();
-
-            while (idle_sound.isPlaying)
+        //while (unchaged_state)
+        //{
+            for (int i = 0; i < chase_clips.Length; i++)
             {
-                yield return null;
-            }
-        }
+                idle_sound.clip = chase_clips[i];
 
+                idle_sound.Play();
+
+                while (idle_sound.isPlaying)
+                {
+                    yield return null;
+                }
+            }
+        //}
     }
 
     // Update is called once per frame
     void Update()
     {
         //If enemy has changed states
-        if (dt.cur_anim_type!=dt.prev_anim_type)
+        if (dt.cur_anim_type!=dt.prev_anim_type&&idle_sound.isActiveAndEnabled)
         {
             unchaged_state = false;
             if (dt.cur_anim_type == DecisionTree.AnimationType.WALKING)

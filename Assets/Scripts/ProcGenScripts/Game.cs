@@ -42,7 +42,15 @@ public class Game : MonoBehaviour
 
 	private GameObject current_note;
 
+	public GameObject ExitSignPrefab;
 
+	private GameObject ExitSignObject;
+
+	[SerializeField]
+	private SoundFXManager SFXManager;
+
+	Vector3 start_pos = new Vector3(1f, -1f, 1f);
+	Vector3 win_pos = new Vector3(-17f, -1f, -19);
 
 
 	/* Helper Functions:
@@ -64,9 +72,12 @@ public class Game : MonoBehaviour
 
 		player.NoteFound += NoteFound;
 		player.NoteDropped += NoteDropped;
+		player.Exit_Triggered += PlayerReachedExit;
 		CreateMaze();
 		AddNote();
-        player.StartNewGame(new Vector3(1f, -1f, 1f));
+		//Exit sign gets added immediately and only gets destroyed when the game is over.
+		AddExitSign();
+        player.StartNewGame(win_pos);
 
 		#region Randomly Places Enemy In a cell.
 
@@ -82,7 +93,6 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-		ReachedEnd();
 		InputHandler();
 		if(player.enabled)
 			player.Move();
@@ -134,7 +144,7 @@ public class Game : MonoBehaviour
 	//Handles resetting player after a moving to next level
 	private void ResetPlayer()
 	{
-		player.StartNewGame(new Vector3(1f, -1f, 1f));
+		player.StartNewGame(win_pos);
 	}
 
 	private void ResetMaze()
@@ -171,6 +181,17 @@ public class Game : MonoBehaviour
 		note.HideNote();
     }
 
+	//adds exit sign to exit point
+	private void AddExitSign()
+    {
+		float x = -19;
+		float z=-19;
+		float y = 0.75f;
+		Vector3 pos = new Vector3(x, y, z);
+		ExitSignObject = Instantiate(ExitSignPrefab, pos, Quaternion.identity);
+		print("Instantiated Exit Sign");
+    }
+
 	private void AddNote()
 	{
 		Vector3 pos;
@@ -190,17 +211,17 @@ public class Game : MonoBehaviour
 		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
 		go.transform.Rotate(new Vector3(0, 0, 90));
 		current_note = go;
-
 		print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 	}
 
 	private void InputHandler()
 	{
-		if (Input.GetKey("space"))
+		if (Input.GetKeyDown("space"))
 		{
+			print("Level ended at: " + Time.deltaTime);
 			EndLevel();
 		}
-		else if (Input.GetKey(KeyCode.Escape))
+		else if (Input.GetKeyDown(KeyCode.Escape))
         {
 			Cursor.lockState = CursorLockMode.None;
 			PauseGame();
@@ -237,8 +258,19 @@ public class Game : MonoBehaviour
 		AddNote(); 
 	}
 
+	//Delegate Method Triggered by Player
+	private void PlayerReachedExit()
+    {
+		EndLevel();
+    }
+
 	private void EndLevel()
     {
+		//Trigger Sound
+		SFXManager.PlayExitSound(player.note_bool);
+
+		//This function stops audio playback in order to avoid infinite loop. 
+		//Enemy.GetComponent<EnemyAudioManager>().reset_unchanged_state();
 		level += 1;
 		print("The current level is: " + level.ToString());
 		if (player.GetNoteLevel()==3) //If you've found all the notes
@@ -257,17 +289,6 @@ public class Game : MonoBehaviour
 		{
 			NewLevel();
 			ResetEntities();
-		}
-
-	}
-
-	//Handles when the player reaches the end of the map.
-	private void ReachedEnd()
-	{
-		Vector3 pos = player.transform.position;
-		if (pos.x <= -18 && pos.z <= -18)
-		{
-			EndLevel();
 		}
 	}
 

@@ -6,6 +6,9 @@ public class PlayerSound : MonoBehaviour
 {
     public AudioSource footsteps;
 
+    [SerializeField]
+    private CapsuleCollider player_colldier;
+
     public void Update()
     {
         if (Input.GetAxis("Horizontal")!=0 || Input.GetAxis("Vertical")!=0)
@@ -16,5 +19,4 @@ public class PlayerSound : MonoBehaviour
             footsteps.enabled = false;
         }
     }
-
 }

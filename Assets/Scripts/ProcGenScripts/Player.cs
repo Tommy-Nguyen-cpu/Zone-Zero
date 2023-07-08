@@ -20,9 +20,14 @@ public class Player : MonoBehaviour
     bool awake = false;
     public delegate void NoteDelegate(); //NoteFound
     public NoteDelegate NoteFound;
-    public NoteDelegate NoteDropped;
+    public delegate void NoteDroppedDelegate();
+    public NoteDroppedDelegate NoteDropped;
+    public bool note_bool;
+    public delegate void ExitDelegate();
+    public ExitDelegate Exit_Triggered;
     private void Awake()
     {
+        note_bool = false;
         if (!awake)
         {
             player_collider = GetComponent<CapsuleCollider>();
@@ -37,10 +42,16 @@ public class Player : MonoBehaviour
     {
         if (collider.tag == "Note")
         {
+            note_bool = true;
             note_level += 1;
             NoteFound?.Invoke();
             print("Found note!" + note_level.ToString());
             //Destroy(collider.gameObject);
+        }
+        if (collider.tag=="Exit")
+        {
+            Exit_Triggered?.Invoke();
+            print("Triggered exit!");
         }
     }
 
@@ -55,6 +66,7 @@ public class Player : MonoBehaviour
 
     public void StartNewGame (Vector3 position)
     {
+        note_bool = false;
         Awake();
         eyeAngles.x = Random.Range(0f, 360f);
         eyeAngles.y = startingVerticalEyeAngle;
@@ -120,6 +132,7 @@ public class Player : MonoBehaviour
     {
         print("PLAYER RESET");
         this.note_level = 0;
+        note_bool = false;
     }
 
     public int GetNoteLevel()
