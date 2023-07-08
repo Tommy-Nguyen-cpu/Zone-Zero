@@ -15,6 +15,11 @@ public class DecisionTree : MonoBehaviour
 
     public Maze PCGMaze;
 
+    //these variables are used by AudioManager to verify if the enemy has changed types
+    public AnimationType cur_anim_type;
+    public AnimationType prev_anim_type;
+
+
     public enum AnimationType
     {
         WALKING, CHASING, IDLING, ATTACKING
@@ -24,6 +29,7 @@ public class DecisionTree : MonoBehaviour
 
     void Start()
     {
+        cur_anim_type = AnimationType.IDLING;
         SetUpDecisionTree(root);
     }
 
@@ -43,7 +49,6 @@ public class DecisionTree : MonoBehaviour
                 }
             }
         }
-
         currentLeaf.Action(Player, gameObject, 5f, myAnimator);
     }
 
@@ -67,8 +72,12 @@ public class DecisionTree : MonoBehaviour
         root.ChildLeafs.Add(idleNode);
     }
 
+
     public void PlayAnimation(AnimationType animationToPlay)
     {
+        //this will help EnemyAudioManager know when a state has changed
+        prev_anim_type = cur_anim_type;
+        cur_anim_type = animationToPlay;
         switch (animationToPlay)
         {
             case AnimationType.ATTACKING:
