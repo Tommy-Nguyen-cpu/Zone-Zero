@@ -219,6 +219,12 @@ public class Game : MonoBehaviour
     {
 		player.PlayerReset();
 		this.level = 0;
+
+		// Resets all hearts.
+		foreach(var heart in Hearts)
+        {
+			heart.enabled = true;
+        }
     }
 
 	//Generates a new level
@@ -291,21 +297,30 @@ public class Game : MonoBehaviour
 
 	private void DecreaseHealth()
     {
-		Debug.Log("Got to decrease heart method");
 		bool LostAllHearts = true;
 		foreach(var heart in Hearts)
         {
             if (heart.enabled)
             {
-				LostAllHearts = false;
 				heart.enabled = false;
+				break;
+            }
+        }
+
+		foreach(var heart in Hearts)
+        {
+            if (heart.enabled)
+            {
+				LostAllHearts = false;
 				break;
             }
         }
 
         if (LostAllHearts)
         {
-			Debug.Log("Lost.");
+			Cursor.lockState = CursorLockMode.None;
+			Time.timeScale = 0;
+			GO_ui.ShowGameOver();
         }
     }
 
