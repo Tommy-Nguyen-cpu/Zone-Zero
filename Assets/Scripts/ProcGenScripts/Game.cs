@@ -135,6 +135,7 @@ public class Game : MonoBehaviour
 
 		StruggleSystem struggleSystem = instantiatedEnemy.GetComponent<StruggleSystem>();
 		struggleSystem.EnemyTree = tree;
+		struggleSystem.MyGameOverUI = GO_ui;
 		struggleSystem.Player = player.gameObject;
 		struggleSystem.QT = QTImage;
 		struggleSystem.tmpText = QTText;
@@ -238,6 +239,7 @@ public class Game : MonoBehaviour
 	//Resets game flags. Used after GameOver to restart game
 	private void RestartGame()
     {
+		Cursor.lockState = CursorLockMode.Locked;
 		player.PlayerReset();
 		this.level = 0;
 

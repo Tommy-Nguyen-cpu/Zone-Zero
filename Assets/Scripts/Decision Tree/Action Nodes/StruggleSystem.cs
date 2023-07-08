@@ -5,6 +5,7 @@ using UnityEngine;
 public class StruggleSystem : MonoBehaviour
 {
     public DecisionTree EnemyTree;
+    public GameOverUI MyGameOverUI;
     public GameObject Player;
     public UnityEngine.UI.Image QT;
     public TMPro.TMP_Text tmpText;
@@ -22,7 +23,6 @@ public class StruggleSystem : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Got to struggle!");
         Stop = false;
         // Disables enemy tree and player movement.
         EnemyTree.enabled = false;
@@ -101,7 +101,16 @@ public class StruggleSystem : MonoBehaviour
 
     void EventFailed()
     {
-        // TODO: Implement once win/lost state is implemented.
-        Debug.Log("Lost game!");
+        Player.GetComponent<Player>().enabled = true;
+        Player.GetComponent<CharacterController>().enabled = true;
+        Player.transform.rotation = Quaternion.identity;
+        StopAllCoroutines();
+
+        // Hides QT UI.
+        tmpText.text = "";
+        QTFillAmount = 0f;
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        MyGameOverUI.ShowGameOver();
     }
 }
