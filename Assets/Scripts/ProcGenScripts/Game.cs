@@ -319,6 +319,7 @@ public class Game : MonoBehaviour
 	public void QuitButton()
     {
 		GameReset();
+		Cursor.lockState = CursorLockMode.None;
 		SceneManager.LoadScene("Main Menu");
 	}
 
