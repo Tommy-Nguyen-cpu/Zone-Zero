@@ -24,8 +24,7 @@ public class StruggleSystem : MonoBehaviour
     private void OnEnable()
     {
         Stop = false;
-        // Disables enemy tree and player movement.
-        EnemyTree.enabled = false;
+        // Disables player movement.
         Player.GetComponent<Player>().enabled = false;
         Player.GetComponent<CharacterController>().enabled = false;
 
@@ -34,6 +33,8 @@ public class StruggleSystem : MonoBehaviour
         tmpText.text = QTButton.ToString();
         QTFillAmount = .5f;
 
+        // TODO: Animation not playing properly.
+        EnemyTree.PlayAnimation(DecisionTree.AnimationType.ATTACKING);
         Player.GetComponent<Player>().LookAtObject(gameObject);
     }
 
