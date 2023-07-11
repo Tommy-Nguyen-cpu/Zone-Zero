@@ -127,6 +127,12 @@ public class Player : MonoBehaviour
         eyeAngles.y = Mathf.Clamp(eyeAngles.y, -45f, 45f);
         eye.localRotation = Quaternion.Euler(eyeAngles.y, eyeAngles.x, 0f);
     }
+
+    public void LookAtObject(GameObject objectToLookAt)
+    {
+        eye.LookAt(new Vector3(objectToLookAt.transform.position.x, .7f, objectToLookAt.transform.position.z));
+    }
+
     //This method is used when the player reaches the end without acquiring all notes. 
     public void PlayerReset()
     {

@@ -34,7 +34,7 @@ public class StruggleSystem : MonoBehaviour
         tmpText.text = QTButton.ToString();
         QTFillAmount = .5f;
 
-        Player.transform.LookAt(new Vector3(transform.position.x, -1*transform.position.y, transform.position.z));
+        Player.GetComponent<Player>().LookAtObject(gameObject);
     }
 
     // Update is called once per frame
