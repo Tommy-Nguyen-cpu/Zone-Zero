@@ -33,7 +33,6 @@ public class StruggleSystem : MonoBehaviour
         tmpText.text = QTButton.ToString();
         QTFillAmount = .5f;
 
-        // TODO: Animation not playing properly.
         EnemyTree.PlayAnimation(DecisionTree.AnimationType.ATTACKING);
         Player.GetComponent<Player>().LookAtObject(gameObject);
     }
