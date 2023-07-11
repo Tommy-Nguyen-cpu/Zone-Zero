@@ -104,7 +104,6 @@ public class StruggleSystem : MonoBehaviour
         Player.GetComponent<Player>().enabled = true;
         Player.GetComponent<CharacterController>().enabled = true;
         Player.transform.rotation = Quaternion.identity;
-        EnemyTree.enabled = true;
         this.enabled = false;
         StopAllCoroutines();
 
