@@ -19,7 +19,7 @@ public class StruggleSystem : MonoBehaviour
     public delegate void HealthDecrement();
     public HealthDecrement DecreaseHealth;
 
-    List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C };
+    List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.E, KeyCode.R, KeyCode.T };
 
     private void OnEnable()
     {
