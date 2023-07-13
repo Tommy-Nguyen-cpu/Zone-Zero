@@ -49,8 +49,8 @@ public class Game : MonoBehaviour
 	[SerializeField]
 	private SoundFXManager SFXManager;
 
-	Vector3 start_pos = new Vector3(1f, -1f, 1f);
-	Vector3 win_pos = new Vector3(-17f, -1f, -19);
+	Vector3 win_pos = new Vector3(1f, -1f, 1f);
+	//Vector3 win_pos = new Vector3(-17f, -1f, -19);
 
 
 	/* Helper Functions:
@@ -163,22 +163,29 @@ public class Game : MonoBehaviour
 	{
 		if (player.GetNoteLevel() == 1)
 		{
-			note.note_txt_1.SetText("Note1");
+			note.note_txt_1.SetText("July 3rd 2022\n"+
+				"The experiments have proven to be a complete success. Last week Dr. Henriksen's theory of splicing the creature's genome with exposed material from the nuclear reactor resulted in our first first sign of life. We registered 5 heart palpitations before the creature went into shock. Just today we managed to resuscitate it. It's currently sitting in the lab glaring at the ground and grunting. Our next steps are to perform a full top-to-bottom analysis of its mental and physical capacity. We don't have high hopes, but we've been surprised before");
 		}
 		else if (player.GetNoteLevel() == 2)
 		{
-			note.note_txt_1.SetText("Note2");
+			note.note_txt_1.SetText("July 4th 2022\n"+
+				"Last night we realized the gravity of our mistake. During our physical examination, the creature attacked Dr. Lansing, viciously throwing him halfway across the room into the wall, killing him instantly. We didn't dare enter the test chamber, as the creature shuffled erratically, ripping up boxes and smashing filing cabinets, all to the sound of its horrifying cries. Those of us that remained convened in the mess hall to asses what could be our next steps, but our meeting was cut short by the sound of the alarm system. Somehow the creature escaped the test chamber, and we could hear it echoing through the halls of the research station. What's more it seemed to be causing the power systems to fluctuate, Dr. Henriksen believes it to be the trace amounts of radiation interfering with our generator.\n"
+				+ "Currently myself and Dr.Henriksen are hiding in one of the storage closets, we believe we're the only ones left. The screams were enough to tips us off to our comrade's fate. We're planning on making a run for the comms system in the next hour. God help us all.");
 		}
 		else if (player.GetNoteLevel() == 3)
 		{
-			note.note_txt_1.SetText("Note3");
+			note.note_txt_1.SetText("July 5th 2022\n"+
+				"My... No your name is Peter Strauss. If you're hearing this, it means our plan was a success. After Dr. Henriksen was killed by the thing, I made a run for the cryo chamber, I thought if we could bide our time the creature would be tired out. I guess you'll be the judge of that. You might not remember anything, that's ok, if we've lost all the knowledge of what went on here, it's for the best. Our only goal is to get out of here. The code to escape the base is 5429310. Find the closest exit and get out of here. Good luck. ");
 		}
+
+		Destroy(current_note);
 		note.ShowNote();
 	}
 
 	//hides Note UI
 	private void NoteDropped()
     {
+		Cursor.lockState = CursorLockMode.Locked;
 		note.HideNote();
     }
 
@@ -315,6 +322,7 @@ public class Game : MonoBehaviour
 	public void QuitButton()
     {
 		GameReset();
+		Cursor.lockState = CursorLockMode.None;
 		SceneManager.LoadScene("Main Menu");
 	}
 

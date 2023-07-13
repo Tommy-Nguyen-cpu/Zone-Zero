@@ -13,6 +13,8 @@ public class NoteAppear : MonoBehaviour
     private Image _note_bg;
     [SerializeField]
     private TMP_Text _note_txt;
+    [SerializeField]
+    private TMP_Text instruction;
 
     // Start is called before the first frame update
 
@@ -20,6 +22,7 @@ public class NoteAppear : MonoBehaviour
     {
         _note_bg.enabled = false;
         _note_txt.enabled = false;
+        instruction.enabled = false;
     }
 
     public Image note_bg
@@ -50,12 +53,14 @@ public class NoteAppear : MonoBehaviour
     {
         _note_bg.enabled = true;
         _note_txt.enabled = true;
+        instruction.enabled = true;
     }
 
     public void HideNote()
     {
         _note_bg.enabled = false;
         _note_txt.enabled = false;
+        instruction.enabled = false;
     }
     /*
 

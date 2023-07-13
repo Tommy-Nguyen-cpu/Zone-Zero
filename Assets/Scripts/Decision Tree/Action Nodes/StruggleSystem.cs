@@ -19,13 +19,12 @@ public class StruggleSystem : MonoBehaviour
     public delegate void HealthDecrement();
     public HealthDecrement DecreaseHealth;
 
-    List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.A, KeyCode.B, KeyCode.C };
+    List<KeyCode> PotentialKeys = new List<KeyCode>{KeyCode.E, KeyCode.R, KeyCode.T };
 
     private void OnEnable()
     {
         Stop = false;
-        // Disables enemy tree and player movement.
-        EnemyTree.enabled = false;
+        // Disables player movement.
         Player.GetComponent<Player>().enabled = false;
         Player.GetComponent<CharacterController>().enabled = false;
 
@@ -34,7 +33,8 @@ public class StruggleSystem : MonoBehaviour
         tmpText.text = QTButton.ToString();
         QTFillAmount = .5f;
 
-        Player.transform.LookAt(new Vector3(transform.position.x, -1*transform.position.y, transform.position.z));
+        EnemyTree.PlayAnimation(DecisionTree.AnimationType.ATTACKING);
+        Player.GetComponent<Player>().LookAtObject(gameObject);
     }
 
     // Update is called once per frame
@@ -104,6 +104,7 @@ public class StruggleSystem : MonoBehaviour
         Player.GetComponent<Player>().enabled = true;
         Player.GetComponent<CharacterController>().enabled = true;
         Player.transform.rotation = Quaternion.identity;
+        this.enabled = false;
         StopAllCoroutines();
 
         // Hides QT UI.
