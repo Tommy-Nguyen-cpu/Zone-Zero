@@ -55,12 +55,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void Update()
     {
-        if (other.tag == "Note")
+        if (Input.GetKey(KeyCode.Q))
         {
-            NoteDropped?.Invoke();
-            Destroy(other.gameObject);
+            NoteDropped.Invoke();
         }
     }
 

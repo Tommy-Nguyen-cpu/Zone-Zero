@@ -177,12 +177,15 @@ public class Game : MonoBehaviour
 			note.note_txt_1.SetText("July 5th 2022\n"+
 				"My... No your name is Peter Strauss. If you're hearing this, it means our plan was a success. After Dr. Henriksen was killed by the thing, I made a run for the cryo chamber, I thought if we could bide our time the creature would be tired out. I guess you'll be the judge of that. You might not remember anything, that's ok, if we've lost all the knowledge of what went on here, it's for the best. Our only goal is to get out of here. The code to escape the base is 5429310. Find the closest exit and get out of here. Good luck. ");
 		}
+
+		Destroy(current_note);
 		note.ShowNote();
 	}
 
 	//hides Note UI
 	private void NoteDropped()
     {
+		Cursor.lockState = CursorLockMode.Locked;
 		note.HideNote();
     }
 
