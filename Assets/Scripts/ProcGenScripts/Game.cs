@@ -164,7 +164,7 @@ public class Game : MonoBehaviour
 		if (player.GetNoteLevel() == 1)
 		{
 			note.note_txt_1.SetText("July 3rd 2022\n"+
-				"The experiments have proven to be a complete success. Last week Dr. Henriksen's theory of splicing the creature's genome with exposed material from the nuclear reactor resulted in our first first sign of life. We registered 5 heart palpitations before the creature went into shock. Just today we managed to resuscitate it. It's currently sitting in the lab glaring at the ground and grunting. Our next steps are to perform a full top-to-bottom analysis of its mental and physical capacity. We don't have high hopes, but we've been surprised before");
+				"The experiments have proven to be a complete success. Last week Dr. Henriksen's theory of splicing the creature's genome with exposed material from the nuclear reactor resulted in our first sign of life. We registered 5 heart palpitations before the creature went into shock. Just today we managed to resuscitate it. It's currently sitting in the lab glaring at the ground and grunting. Our next steps are to perform a full top-to-bottom analysis of its mental and physical capacity. We don't have high hopes, but we've been surprised before");
 		}
 		else if (player.GetNoteLevel() == 2)
 		{
