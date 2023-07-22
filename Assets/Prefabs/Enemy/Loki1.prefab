@@ -3605,6 +3605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyTree: {fileID: 0}
+  MyGameOverUI: {fileID: 0}
   Player: {fileID: 0}
   QT: {fileID: 0}
   tmpText: {fileID: 0}
@@ -3640,7 +3641,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.286
   m_Pitch: 1
   Loop: 0
   Mute: 0
