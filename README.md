@@ -19,10 +19,14 @@ Within "Zone Zero Executables" folder contains 2 folders: "Windows" and "MACOS".
 
 ![ExampleEXE](https://github.com/Tommy-Nguyen-cpu/Zone-Zero/assets/75864631/14c4d7a7-16a8-4373-8dbb-14ea9aa2849c)
 
+
 ![WindowsExecutable](https://github.com/Tommy-Nguyen-cpu/Zone-Zero/assets/75864631/1f31a81b-9594-48a3-ace9-35bb84a90e1a)
+
 The image above shows the contents of the folder "Windows". The circled file is the executable file.
 
+
 ![MACOSExecutable](https://github.com/Tommy-Nguyen-cpu/Zone-Zero/assets/75864631/722028e1-ea00-4b14-87f5-4816c0716bee)
+
 The image above shows the executable file for MACOS. The executable is in the following directory: "MACOS\MACOS.app\Contents\MacOS".
 
 
