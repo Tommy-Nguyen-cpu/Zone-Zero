@@ -35,7 +35,17 @@ public class Game : MonoBehaviour
 
 	int level = 0;
 
-	public GameObject NotePrefab;
+    #region Note Fields
+    const int MAX_NUMBER_OF_NOTES = 3;
+	
+	// Inserted a dummy text. Apparently our indexing (note level) starts off at 1.
+	string[] NoteTexts = { "",
+	"July 3rd 2022\nThe experiments have proven to be a complete success. Last week Dr. Henriksen's theory of splicing the creature's genome with exposed material from the nuclear reactor resulted in our first sign of life. We registered 5 heart palpitations before the creature went into shock. Just today we managed to resuscitate it. It's currently sitting in the lab glaring at the ground and grunting. Our next steps are to perform a full top-to-bottom analysis of its mental and physical capacity. We don't have high hopes, but we've been surprised before",
+	"July 4th 2022\nLast night we realized the gravity of our mistake. During our physical examination, the creature attacked Dr. Lansing, viciously throwing him halfway across the room into the wall, killing him instantly. We didn't dare enter the test chamber, as the creature shuffled erratically, ripping up boxes and smashing filing cabinets, all to the sound of its horrifying cries. Those of us that remained convened in the mess hall to asses what could be our next steps, but our meeting was cut short by the sound of the alarm system. Somehow the creature escaped the test chamber, and we could hear it echoing through the halls of the research station. What's more it seemed to be causing the power systems to fluctuate, Dr. Henriksen believes it to be the trace amounts of radiation interfering with our generator.\nCurrently myself and Dr.Henriksen are hiding in one of the storage closets, we believe we're the only ones left. The screams were enough to tips us off to our comrade's fate. We're planning on making a run for the comms system in the next hour. God help us all.",
+	"July 5th 2022\nMy... No your name is Peter Strauss. If you're hearing this, it means our plan was a success. After Dr. Henriksen was killed by the thing, I made a run for the cryo chamber, I thought if we could bide our time the creature would be tired out. I guess you'll be the judge of that. You might not remember anything, that's ok, if we've lost all the knowledge of what went on here, it's for the best. Our only goal is to get out of here. The code to escape the base is 5429310. Find the closest exit and get out of here. Good luck. "};
+    #endregion
+
+    public GameObject NotePrefab;
 
 	public NoteAppear note;
 	public GameOverUI GO_ui;
@@ -161,22 +171,8 @@ public class Game : MonoBehaviour
 	//Handle displaying note
 	private void NoteFound()
 	{
-		if (player.GetNoteLevel() == 1)
-		{
-			note.note_txt_1.SetText("July 3rd 2022\n"+
-				"The experiments have proven to be a complete success. Last week Dr. Henriksen's theory of splicing the creature's genome with exposed material from the nuclear reactor resulted in our first sign of life. We registered 5 heart palpitations before the creature went into shock. Just today we managed to resuscitate it. It's currently sitting in the lab glaring at the ground and grunting. Our next steps are to perform a full top-to-bottom analysis of its mental and physical capacity. We don't have high hopes, but we've been surprised before");
-		}
-		else if (player.GetNoteLevel() == 2)
-		{
-			note.note_txt_1.SetText("July 4th 2022\n"+
-				"Last night we realized the gravity of our mistake. During our physical examination, the creature attacked Dr. Lansing, viciously throwing him halfway across the room into the wall, killing him instantly. We didn't dare enter the test chamber, as the creature shuffled erratically, ripping up boxes and smashing filing cabinets, all to the sound of its horrifying cries. Those of us that remained convened in the mess hall to asses what could be our next steps, but our meeting was cut short by the sound of the alarm system. Somehow the creature escaped the test chamber, and we could hear it echoing through the halls of the research station. What's more it seemed to be causing the power systems to fluctuate, Dr. Henriksen believes it to be the trace amounts of radiation interfering with our generator.\n"
-				+ "Currently myself and Dr.Henriksen are hiding in one of the storage closets, we believe we're the only ones left. The screams were enough to tips us off to our comrade's fate. We're planning on making a run for the comms system in the next hour. God help us all.");
-		}
-		else if (player.GetNoteLevel() == 3)
-		{
-			note.note_txt_1.SetText("July 5th 2022\n"+
-				"My... No your name is Peter Strauss. If you're hearing this, it means our plan was a success. After Dr. Henriksen was killed by the thing, I made a run for the cryo chamber, I thought if we could bide our time the creature would be tired out. I guess you'll be the judge of that. You might not remember anything, that's ok, if we've lost all the knowledge of what went on here, it's for the best. Our only goal is to get out of here. The code to escape the base is 5429310. Find the closest exit and get out of here. Good luck. ");
-		}
+		Debug.Log("Note level: " + player.GetNoteLevel());
+		note.note_txt_1.SetText(NoteTexts[player.GetNoteLevel()]);
 
 		Destroy(current_note);
 		note.ShowNote();
@@ -219,17 +215,17 @@ public class Game : MonoBehaviour
 		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
 		go.transform.Rotate(new Vector3(0, 0, 90));
 		current_note = go;
-		print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
+		// print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 	}
 
 	private void InputHandler()
 	{
-		if (Input.GetKeyDown("space"))
+/*		if (Input.GetKeyDown("space"))
 		{
 			print("Level ended at: " + Time.deltaTime);
 			EndLevel();
-		}
-		else if (Input.GetKeyDown(KeyCode.Escape))
+		}*/
+		if (Input.GetKeyDown(KeyCode.Escape))
         {
 			Cursor.lockState = CursorLockMode.None;
 			PauseGame();
@@ -281,14 +277,14 @@ public class Game : MonoBehaviour
 		//This function stops audio playback in order to avoid infinite loop. 
 		//Enemy.GetComponent<EnemyAudioManager>().reset_unchanged_state();
 		level += 1;
-		print("The current level is: " + level.ToString());
-		if (player.GetNoteLevel()==3) //If you've found all the notes
+		// print("The current level is: " + level.ToString());
+		if (player.GetNoteLevel()== MAX_NUMBER_OF_NOTES) //If you've found all the notes
 		{
 			Time.timeScale = 0;
 			Cursor.lockState = CursorLockMode.None;
 			GO_ui.ShowWinScreen();
 			//gameOver = true;
-		} else if (this.level > 2) //If you reach the last map without finding all notes
+		} else if (this.level > MAX_NUMBER_OF_NOTES-1) //If you reach the last map without finding all notes
 		{
 			Time.timeScale = 0;
 			Cursor.lockState = CursorLockMode.None;

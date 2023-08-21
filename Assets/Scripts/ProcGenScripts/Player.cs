@@ -45,13 +45,13 @@ public class Player : MonoBehaviour
             note_bool = true;
             note_level += 1;
             NoteFound?.Invoke();
-            print("Found note!" + note_level.ToString());
+            // print("Found note!" + note_level.ToString());
             //Destroy(collider.gameObject);
         }
         if (collider.tag=="Exit")
         {
             Exit_Triggered?.Invoke();
-            print("Triggered exit!");
+            // print("Triggered exit!");
         }
     }
 
