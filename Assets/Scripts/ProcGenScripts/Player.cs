@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -25,6 +26,10 @@ public class Player : MonoBehaviour
     public bool note_bool;
     public delegate void ExitDelegate();
     public ExitDelegate Exit_Triggered;
+
+    public GameObject PickUpInstruction;
+    public LayerMask ItemLayer;
+    public Inventory inventoryScript;
     private void Awake()
     {
         note_bool = false;
@@ -61,6 +66,8 @@ public class Player : MonoBehaviour
         {
             NoteDropped.Invoke();
         }
+
+        OverItem();
     }
 
     public void StartNewGame (Vector3 position)
@@ -143,5 +150,21 @@ public class Player : MonoBehaviour
     public int GetNoteLevel()
     {
         return this.note_level;
+    }
+
+    private void OverItem()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, 10f, ItemLayer))
+        {
+            PickUpInstruction.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                inventoryScript.AddItem(hit.collider.gameObject);
+            }
+        }
+        else
+            PickUpInstruction.SetActive(false);
     }
 }
