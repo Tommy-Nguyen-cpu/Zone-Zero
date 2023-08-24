@@ -30,6 +30,8 @@ public class Player : MonoBehaviour
     public GameObject PickUpInstruction;
     public LayerMask ItemLayer;
     public Inventory inventoryScript;
+    public GameObject PickUpNotification;
+    public Animator PickUpNotifAnimator;
     private void Awake()
     {
         note_bool = false;
@@ -154,6 +156,11 @@ public class Player : MonoBehaviour
 
     private void OverItem()
     {
+        if(PickUpNotification.activeSelf)
+        {
+            if(PickUpNotifAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+                PickUpNotification.SetActive(false);
+        }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, 10f, ItemLayer))
@@ -161,6 +168,8 @@ public class Player : MonoBehaviour
             PickUpInstruction.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E))
             {
+                PickUpNotification.SetActive(true);
+                PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
                 inventoryScript.AddItem(hit.collider.gameObject);
             }
         }
