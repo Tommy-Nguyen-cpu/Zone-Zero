@@ -165,7 +165,7 @@ public class Player : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, 10f))
         {
-            // Debug.Log("Layer: " + (1 << hit.collider.gameObject.layer) + " For item layer " + ItemLayer.value);
+            // Debug.Log("Layer: " + hit.collider.gameObject.layer + $"({hit.collider.name})" + " For item layer " + ItemLayer.value);
             if((1 << hit.collider.gameObject.layer) == ItemLayer.value)
             {
                 PickUpInstruction.SetActive(true);
@@ -174,9 +174,6 @@ public class Player : MonoBehaviour
                     PickUpNotification.SetActive(true);
                     PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
                     inventoryScript.AddItem(hit.collider.gameObject);
-
-                    // Item should only be disabled, NOT destroyed. Each time a new map is generated, the item should still remain.
-                    hit.collider.gameObject.SetActive(false);
                 }
             }
             else
