@@ -29,7 +29,6 @@ public class Player : MonoBehaviour
 
     public GameObject PickUpInstruction;
     public LayerMask ItemLayer;
-    public LayerMask ObstacleLayer;
     public Inventory inventoryScript;
     public GameObject PickUpNotification;
     public Animator PickUpNotifAnimator;
@@ -175,6 +174,9 @@ public class Player : MonoBehaviour
                     PickUpNotification.SetActive(true);
                     PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
                     inventoryScript.AddItem(hit.collider.gameObject);
+
+                    // Item should only be disabled, NOT destroyed. Each time a new map is generated, the item should still remain.
+                    hit.collider.gameObject.SetActive(false);
                 }
             }
             else
