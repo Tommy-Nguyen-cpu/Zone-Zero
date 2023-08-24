@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
 
     public GameObject PickUpInstruction;
     public LayerMask ItemLayer;
+    public LayerMask ObstacleLayer;
     public Inventory inventoryScript;
     public GameObject PickUpNotification;
     public Animator PickUpNotifAnimator;
@@ -163,17 +164,21 @@ public class Player : MonoBehaviour
         }
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, 10f, ItemLayer))
+        if(Physics.Raycast(ray, out hit, 10f))
         {
-            PickUpInstruction.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E))
+            // Debug.Log("Layer: " + (1 << hit.collider.gameObject.layer) + " For item layer " + ItemLayer.value);
+            if((1 << hit.collider.gameObject.layer) == ItemLayer.value)
             {
-                PickUpNotification.SetActive(true);
-                PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
-                inventoryScript.AddItem(hit.collider.gameObject);
+                PickUpInstruction.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    PickUpNotification.SetActive(true);
+                    PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
+                    inventoryScript.AddItem(hit.collider.gameObject);
+                }
             }
+            else
+                PickUpInstruction.SetActive(false);
         }
-        else
-            PickUpInstruction.SetActive(false);
     }
 }
