@@ -7,10 +7,16 @@ public class Inventory : MonoBehaviour
     public IconMaker iconMaker;
     List<GameObject> Items = new List<GameObject>();
 
-    public void AddItem(GameObject item)
+    public bool AddItem(GameObject item)
     {
-        Items.Add(item);
-        iconMaker.AddIcon(item);
+        // Only add items if we have less items than we have cameras.
+        if(Items.Count < iconMaker.cams.Count)
+        {
+            Items.Add(item);
+            iconMaker.AddIcon(item);
+            return true;
+        }
+        return false;
     }
 
     public void Dropitem(GameObject item)

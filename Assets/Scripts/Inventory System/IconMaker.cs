@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class IconMaker : MonoBehaviour
 {
-    int EmptyIconSlotIndex = 0;
+    List<bool> EmptySlots = new List<bool>();
     public List<Image> Icons;
     public List<Camera> cams;
 
@@ -42,18 +42,23 @@ public class IconMaker : MonoBehaviour
         for(int i = 0; i < Icons.Count; i++)
         {
             Icons[i].sprite = GetIcon(cams[i]);
+            EmptySlots.Add(true);
         }
     }
 
     public void AddIcon(GameObject newItem)
     {
-        if (EmptyIconSlotIndex > Icons.Count - 1)
-            return;
+        for(int i = 0; i < cams.Count; i++)
+        {
+            if(EmptySlots[i] == true)
+            {
+                newItem.transform.position = new Vector3(cams[i].transform.position.x - .3f, cams[i].transform.position.y, cams[i].transform.position.z + 2);
 
-        newItem.transform.position = new Vector3(cams[EmptyIconSlotIndex].transform.position.x - .3f, cams[EmptyIconSlotIndex].transform.position.y, cams[EmptyIconSlotIndex].transform.position.z + 2);
-
-        Icons[EmptyIconSlotIndex].sprite = GetIcon(cams[EmptyIconSlotIndex]);
-        EmptyIconSlotIndex++;
+                Icons[i].sprite = GetIcon(cams[i]);
+                EmptySlots[i] = false;
+                return;
+            }
+        }
     }
 
     /// <summary>
@@ -69,7 +74,7 @@ public class IconMaker : MonoBehaviour
             if(diffX < 1 && diffY < 1)
             {
                 Icons[i].sprite = GetIcon(cams[i]);
-                EmptyIconSlotIndex--;
+                EmptySlots[i] = true;
                 return;
             }
         }

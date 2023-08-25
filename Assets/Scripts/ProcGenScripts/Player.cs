@@ -169,8 +169,11 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     PickUpNotification.SetActive(true);
-                    PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
-                    inventoryScript.AddItem(hit.collider.gameObject);
+                    bool successfulPickup = inventoryScript.AddItem(hit.collider.gameObject);
+                    if(successfulPickup)
+                        PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Picked up " + hit.collider.name + "!";
+                    else
+                        PickUpNotification.GetComponent<TMPro.TextMeshProUGUI>().text = "Full inventory, cannot pick up.";
                 }
             }
             else
