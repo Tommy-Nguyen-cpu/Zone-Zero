@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4711923192953951853}
   - component: {fileID: 8560154012924434888}
   - component: {fileID: 5849949354029100290}
-  m_Layer: 0
+  - component: {fileID: 1744386684557193142}
+  m_Layer: 8
   m_Name: Walkman
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5345717237825244375}
   m_LocalRotation: {x: -0.49991274, y: -0.50008726, z: -0.49991274, w: 0.50008726}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,3 +89,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1744386684557193142
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5345717237825244375}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.015503988, y: 0.056192804, z: 0.11039541}
+  m_Center: {x: 0, y: -0.0014282315, z: 0.028529536}

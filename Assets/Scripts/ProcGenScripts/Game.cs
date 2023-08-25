@@ -108,7 +108,7 @@ public class Game : MonoBehaviour
     private void Update()
     {
 		InputHandler();
-		if(Time.timeScale > 0)
+		if(Time.timeScale > 0 && player.enabled)
 			player.Move();
 
 	}
@@ -219,14 +219,15 @@ public class Game : MonoBehaviour
 		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
 		go.transform.Rotate(new Vector3(0, 0, 90));
 		current_note = go;
-		// print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
+        // print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 
-/*		foreach(var item in ItemsToGenerate)
+/*        foreach (var item in ItemsToGenerate)
         {
-			GameObject newItem = Instantiate(item, pos, item.transform.rotation);
-			pos = new Vector3(pos.x, pos.y + .1f, pos.z);
+            GameObject newItem = Instantiate(item, pos, item.transform.rotation);
+			newItem.name = newItem.name.Replace("(Clone)", "");
+            pos = new Vector3(pos.x, pos.y + .1f, pos.z);
         }*/
-	}
+    }
 
 	private void InputHandler()
 	{

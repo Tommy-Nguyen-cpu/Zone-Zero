@@ -59,7 +59,7 @@ public class IconMaker : MonoBehaviour
         {
             if(EmptySlots[i] == true)
             {
-                newItem.transform.position = new Vector3(cams[i].transform.position.x - .3f, cams[i].transform.position.y, cams[i].transform.position.z + 2);
+                newItem.transform.position = new Vector3(cams[i].transform.position.x - .09f, cams[i].transform.position.y, cams[i].transform.position.z + .5f);
 
                 Icons[i].sprite = GetIcon(cams[i]);
                 EmptySlots[i] = false;
