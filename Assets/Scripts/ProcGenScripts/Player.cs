@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
             NoteDropped.Invoke();
         }
 
+        inventoryScript.SelectItem();
         OverItem();
         UpdateEyeAngles();
         UpdatePosition();

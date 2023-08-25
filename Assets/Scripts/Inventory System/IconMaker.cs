@@ -7,6 +7,7 @@ public class IconMaker : MonoBehaviour
     List<bool> EmptySlots = new List<bool>();
     public List<Image> Icons;
     public List<Camera> cams;
+    public List<int> ItemSlotKeys{ get; private set; }
 
     public Sprite GetIcon(Camera cam)
     {
@@ -43,6 +44,12 @@ public class IconMaker : MonoBehaviour
         {
             Icons[i].sprite = GetIcon(cams[i]);
             EmptySlots.Add(true);
+        }
+
+        ItemSlotKeys = new List<int>();
+        for(int i = 49; i < Icons.Count + 49; i++)
+        {
+            ItemSlotKeys.Add(i);
         }
     }
 
