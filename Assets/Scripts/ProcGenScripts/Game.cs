@@ -108,7 +108,7 @@ public class Game : MonoBehaviour
     private void Update()
     {
 		InputHandler();
-		if(player.enabled)
+		if(Time.timeScale > 0)
 			player.Move();
 
 	}
@@ -220,6 +220,12 @@ public class Game : MonoBehaviour
 		go.transform.Rotate(new Vector3(0, 0, 90));
 		current_note = go;
 		// print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
+
+/*		foreach(var item in ItemsToGenerate)
+        {
+			GameObject newItem = Instantiate(item, pos, item.transform.rotation);
+			pos = new Vector3(pos.x, pos.y + .1f, pos.z);
+        }*/
 	}
 
 	private void InputHandler()

@@ -62,16 +62,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Q))
-        {
-            NoteDropped.Invoke();
-        }
-
-        OverItem();
-    }
-
     public void StartNewGame (Vector3 position)
     {
         note_bool = false;
@@ -85,6 +75,13 @@ public class Player : MonoBehaviour
 
     public Vector3 Move()
     {
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            NoteDropped.Invoke();
+        }
+
+        OverItem();
         UpdateEyeAngles();
         UpdatePosition();
         return transform.localPosition;
