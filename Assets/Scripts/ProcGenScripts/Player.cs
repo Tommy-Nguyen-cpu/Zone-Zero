@@ -82,6 +82,8 @@ public class Player : MonoBehaviour
         }
 
         inventoryScript.SelectItem();
+        if (!PickUpNotification.activeInHierarchy)
+            inventoryScript.ItemAction(eye);
         OverItem();
         UpdateEyeAngles();
         UpdatePosition();

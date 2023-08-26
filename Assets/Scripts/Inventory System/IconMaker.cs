@@ -80,6 +80,7 @@ public class IconMaker : MonoBehaviour
             float diffY = Mathf.Abs(cams[i].transform.position.y - item.transform.position.y);
             if(diffX < 1 && diffY < 1)
             {
+                item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y + 5, item.transform.position.z);
                 Icons[i].sprite = GetIcon(cams[i]);
                 EmptySlots[i] = true;
                 return;

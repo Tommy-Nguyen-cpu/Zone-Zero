@@ -4,27 +4,63 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    (int, bool) previousButton = (0, true);
+    (int, bool, int) previousButton = (0, true, -1);
+    public ItemViewScript itemViewController;
     public GameObject ItemNameDisplay;
+    public GameObject itemInstructions;
     public IconMaker iconMaker;
     List<GameObject> Items = new List<GameObject>();
 
     public bool AddItem(GameObject item)
     {
-        // Only add items if we have less items than we have cameras.
-        if(Items.Count < iconMaker.cams.Count)
+        int emptySlotIndex = -1;
+        for(int i = 0; i < Items.Count; i++)
+        {
+            if(Items[i] == null)
+            {
+                emptySlotIndex = i;
+                break;
+            }
+        }
+        if (emptySlotIndex != -1)
+        {
+            Items[emptySlotIndex] = item;
+            iconMaker.AddIcon(item);
+            return true;
+        }
+        else if(Items.Count < iconMaker.cams.Count)
         {
             Items.Add(item);
             iconMaker.AddIcon(item);
             return true;
         }
+
         return false;
     }
 
-    public void Dropitem(GameObject item)
+    private void Dropitem(Transform player)
     {
-        Items.Remove(item);
-        iconMaker.RemoveIcon(item);
+        // If we already dropped the item.
+        if (Items[previousButton.Item3] == null)
+            return;
+
+        iconMaker.RemoveIcon(Items[previousButton.Item3]);
+        Items[previousButton.Item3].transform.position = player.position + player.forward;
+        Items[previousButton.Item3] = null;
+
+
+        previousButton.Item2 = !previousButton.Item2;
+        ItemNameDisplay.SetActive(previousButton.Item2);
+        itemInstructions.SetActive(previousButton.Item2);
+    }
+
+    private void ViewItem(Transform player)
+    {
+        // TODO: Probably should provide players with controls to zoom in and out and rotate item when viewing.
+        if (Items[previousButton.Item3] == null)
+            return;
+
+        itemViewController.InitiateViewItem(Items[previousButton.Item3]);
     }
 
     /// <summary>
@@ -34,7 +70,7 @@ public class Inventory : MonoBehaviour
     {
         for(int i = 0; i < Items.Count; i++)
         {
-            if (Input.GetKeyDown((KeyCode)iconMaker.ItemSlotKeys[i]))
+            if (Input.GetKeyDown((KeyCode)iconMaker.ItemSlotKeys[i]) && Items[i] != null)
             {
                 ItemNameDisplay.GetComponent<TMPro.TextMeshProUGUI>().text = Items[iconMaker.ItemSlotKeys[i] - 49].name;
 
@@ -42,15 +78,39 @@ public class Inventory : MonoBehaviour
                 {
                     previousButton.Item2 = !previousButton.Item2;
                     ItemNameDisplay.SetActive(previousButton.Item2);
+                    itemInstructions.SetActive(previousButton.Item2);
                 }
                 else
                 {
                     ItemNameDisplay.SetActive(true);
+                    itemInstructions.SetActive(true);
                     previousButton.Item1 = iconMaker.ItemSlotKeys[i];
                     previousButton.Item2 = true;
+                    previousButton.Item3 = i;
                 }
-                return;
             }
+        }
+    }
+
+    public void ItemAction(Transform player)
+    {
+        if (!ItemNameDisplay.activeInHierarchy)
+            return;
+
+        // Activate Item
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+        }
+        // View Item
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            ViewItem(player);
+        }
+        // Drop Item
+        else if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Dropitem(player);
         }
     }
 }
