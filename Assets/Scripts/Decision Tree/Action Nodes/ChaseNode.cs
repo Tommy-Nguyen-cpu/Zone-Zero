@@ -77,7 +77,6 @@ public class ChaseNode : Leaf
 
     public override void Action(GameObject player, GameObject myObject, float runninSpeed, Animator animator)
     {
-        // TODO: If player is not directly in front of the enemy, Find a path to the player.
         Vector3 direction = player.transform.position - myObject.transform.position;
         RaycastHit hit;
         if(!Physics.Raycast(myObject.transform.position, direction, out hit, Mathf.Infinity, ParentTree.ObstacleLayerMask))
@@ -107,8 +106,6 @@ public class ChaseNode : Leaf
         (_, goalIndex) = NearestNode(player);
         int2 coordinate = PCGMaze.IndexToCoordinates(goalIndex);
         GoalNode = Pathfinding.CreateNode(coordinate, PCGMaze);
-        // TODO: It's weird, after he chases the player, if the player manages to escape, and then goes right in front of him, it triggers the Chase sequence instead of attack.
-        // TODO: And the enemy chases after something different? Fazes through the wall and isn't even looking at the player.
         if (ReachedGoal)
         {
             NextNode = 0;
