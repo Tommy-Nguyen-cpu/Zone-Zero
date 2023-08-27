@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     public GameObject ItemNameDisplay;
     public GameObject itemInstructions;
     public IconMaker iconMaker;
-    List<GameObject> Items = new List<GameObject>();
+    public List<GameObject> Items = new List<GameObject>();
 
     public bool AddItem(GameObject item)
     {
@@ -56,17 +56,29 @@ public class Inventory : MonoBehaviour
 
     private void ViewItem(Transform player)
     {
-        // TODO: Probably should provide players with controls to zoom in and out and rotate item when viewing.
         if (Items[previousButton.Item3] == null)
             return;
 
         itemViewController.InitiateViewItem(Items[previousButton.Item3]);
     }
 
+    private void ActivateItem()
+    {
+        if (Items[previousButton.Item3] == null)
+            return;
+
+        Activation activateScript = Items[previousButton.Item3].GetComponent<Activation>();
+        if(activateScript != null)
+        {
+            Debug.Log($"{Items[previousButton.Item3].name} has activation script!");
+            activateScript.Activate();
+        }
+    }
+
     /// <summary>
     /// Based on player input, display the corresponding item.
     /// </summary>
-    public void SelectItem()
+    public GameObject SelectItem()
     {
         for(int i = 0; i < Items.Count; i++)
         {
@@ -79,6 +91,8 @@ public class Inventory : MonoBehaviour
                     previousButton.Item2 = !previousButton.Item2;
                     ItemNameDisplay.SetActive(previousButton.Item2);
                     itemInstructions.SetActive(previousButton.Item2);
+                    // In situations where the player selects and then unselects.
+                    return Items[previousButton.Item3];
                 }
                 else
                 {
@@ -87,9 +101,18 @@ public class Inventory : MonoBehaviour
                     previousButton.Item1 = iconMaker.ItemSlotKeys[i];
                     previousButton.Item2 = true;
                     previousButton.Item3 = i;
+                    return Items[i];
                 }
             }
         }
+        return null;
+    }
+
+    public GameObject GetCurrentItem()
+    {
+        if (previousButton.Item3 == -1)
+            return null;
+        return Items[previousButton.Item3];
     }
 
     public void ItemAction(Transform player)
@@ -100,7 +123,7 @@ public class Inventory : MonoBehaviour
         // Activate Item
         if (Input.GetKeyDown(KeyCode.E))
         {
-
+            ActivateItem();
         }
         // View Item
         else if (Input.GetKeyDown(KeyCode.R))

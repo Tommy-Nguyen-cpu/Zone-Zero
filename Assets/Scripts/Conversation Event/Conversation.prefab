@@ -12,13 +12,14 @@ GameObject:
   - component: {fileID: 5318628113785269660}
   - component: {fileID: 5318628113785269661}
   - component: {fileID: 5318628113785269662}
+  - component: {fileID: -7691513192905339628}
   m_Layer: 5
   m_Name: Conversation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5318628113785269659
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33,7 +34,7 @@ RectTransform:
   m_Children:
   - {fileID: 5318628115273347697}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -102,6 +103,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &-7691513192905339628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5318628113785269663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ada7c28e3f59554bb1d7f10f5b62f7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 5318628115034490545}
+  textPrefab: {fileID: 4608555396734846470, guid: 7b1ebc2be3ddb7c49a3509bb6ec97caa,
+    type: 3}
 --- !u!1 &5318628113938717972
 GameObject:
   m_ObjectHideFlags: 0

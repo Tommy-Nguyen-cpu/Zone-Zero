@@ -22,6 +22,12 @@ public class ConversationEvent : MonoBehaviour
             RanOnce = true;
             StartCoroutine(DisplayConversation());
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Destroy(gameObject);
+        }
     }
 
     IEnumerator DisplayConversation()

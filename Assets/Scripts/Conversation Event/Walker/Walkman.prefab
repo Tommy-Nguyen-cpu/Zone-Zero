@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8560154012924434888}
   - component: {fileID: 5849949354029100290}
   - component: {fileID: 1744386684557193142}
+  - component: {fileID: -6331484457034392779}
   m_Layer: 8
   m_Name: Walkman
   m_TagString: Untagged
@@ -102,3 +103,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.015503988, y: 0.056192804, z: 0.11039541}
   m_Center: {x: 0, y: -0.0014282315, z: 0.028529536}
+--- !u!114 &-6331484457034392779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5345717237825244375}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9012a06a582fc114e9e7e225fc41d4a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversationUIPrefab: {fileID: 5318628113785269663, guid: ec847b3831821ad46b73f6e1814102f6,
+    type: 3}
+  InstantiatedConversationUI: {fileID: 0}

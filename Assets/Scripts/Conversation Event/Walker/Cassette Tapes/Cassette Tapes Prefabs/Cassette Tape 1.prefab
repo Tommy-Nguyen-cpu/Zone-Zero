@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1796552896131263435}
   - component: {fileID: -7158696576476425587}
+  - component: {fileID: -7431825287847001641}
   m_Layer: 8
   m_Name: Cassette Tape 1
   m_TagString: Untagged
@@ -47,6 +48,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 3, z: 5.7}
   m_Center: {x: 1.3, y: 0, z: 0}
+--- !u!114 &-7431825287847001641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415665182715818353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa7a55e49c8d224bb2e01313703a24f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ConversationIndex: 0
 --- !u!1 &1506587830588358212
 GameObject:
   m_ObjectHideFlags: 0

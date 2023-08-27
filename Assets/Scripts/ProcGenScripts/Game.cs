@@ -47,6 +47,7 @@ public class Game : MonoBehaviour
 
 	#region Items
 	public List<GameObject> ItemsToGenerate = new List<GameObject>();
+	public TMPro.TextMeshProUGUI ActivateInstruct;
     #endregion
 
     public GameObject NotePrefab;
@@ -219,14 +220,19 @@ public class Game : MonoBehaviour
 		GameObject go = Instantiate(NotePrefab, pos, Quaternion.identity);
 		go.transform.Rotate(new Vector3(0, 0, 90));
 		current_note = go;
-        // print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
+		// print("Instantiated a note at: " + pos.x.ToString() + " and " + pos.z.ToString());
 
-/*        foreach (var item in ItemsToGenerate)
+		Activation.PlayerScript = player;
+		Activation.ActivateInstruction = ActivateInstruct;
+		Activation.InventoryScript = GetComponent<Inventory>();
+		// TODO: Depending on how I decide to generate these cassette tapes/walkman, it might be an issue.
+		// TODO: On each map generation, we might generate the exact same cassette tape (which is what we want to avoid).
+        foreach (var item in ItemsToGenerate)
         {
             GameObject newItem = Instantiate(item, pos, item.transform.rotation);
-			newItem.name = newItem.name.Replace("(Clone)", "");
+            newItem.name = newItem.name.Replace("(Clone)", "");
             pos = new Vector3(pos.x, pos.y + .1f, pos.z);
-        }*/
+        }
     }
 
 	private void InputHandler()

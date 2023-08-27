@@ -63,7 +63,7 @@ public class DecisionTree : MonoBehaviour
         root.ChildLeafs.Add(attackNode);
         StunnedNode stunnedNode = new StunnedNode();
         root.ChildLeafs.Add(stunnedNode);
-        ChaseNode chaseNode = new ChaseNode();
+        ChaseNode chaseNode = new ChaseNode(PCGMaze);
         chaseNode.ParentTree = this;
         root.ChildLeafs.Add(chaseNode);
 
@@ -105,6 +105,30 @@ public class DecisionTree : MonoBehaviour
                 myAnimator.SetBool("IsAttacking", false);
                 break;
         }
+    }
+
+    // TODO: I'll look into how to make the rotation smoother in the future.
+    public void MoveAndRotate(Vector3 target, float rotationSpeed, float walkSpeed)
+    {
+        StopAllCoroutines();
+        StartCoroutine(GradualMoveAndLookAt(target, rotationSpeed, walkSpeed));
+    }
+
+    private IEnumerator GradualMoveAndLookAt(Vector3 target, float rotationSpeed, float walkSpeed)
+    {
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(target - transform.position);
+
+        float elapsedTime = 0f;
+        while(elapsedTime < 1f)
+        {
+            transform.rotation = Quaternion.Lerp(startRotation, targetRotation, elapsedTime);
+            elapsedTime += Time.deltaTime * rotationSpeed;
+            transform.position = Vector3.MoveTowards(transform.position, target, walkSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
     }
 
     private void OnDrawGizmos()
